@@ -6,8 +6,10 @@ import { useDailiesStore } from "../state/useDailiesStore";
 import { getGoalStatus } from "../lib/goalProgress";
 import { DAILY_TASKS } from "../data/dailies";
 import { FARM_RUNS } from "../data/farmRuns";
+import { GEAR_PROGRESSION } from "../data/gearProgression";
 import { Panel } from "../components/common/Panel";
 import { ProgressBar } from "../components/common/ProgressBar";
+import { useGearProgressionStore } from "../state/useGearProgressionStore";
 
 export function DashboardPage() {
   const rsn = useAccountStore((s) => s.rsn);
@@ -16,6 +18,7 @@ export function DashboardPage() {
   const goals = useGoalsStore((s) => s.goals);
   const isDailyChecked = useDailiesStore((s) => s.isChecked);
   const customTasks = useDailiesStore((s) => s.customTasks);
+  const obtainedGear = useGearProgressionStore((s) => s.obtained);
 
   const completedGoals = useMemo(
     () => goals.filter((g) => getGoalStatus(g, hiscores, wikisync).completed).length,
@@ -24,6 +27,9 @@ export function DashboardPage() {
 
   const allDailyTasks = [...DAILY_TASKS, ...customTasks];
   const doneDailies = allDailyTasks.filter((t) => isDailyChecked(t.id)).length;
+
+  const allGearItems = useMemo(() => GEAR_PROGRESSION.flatMap((t) => t.items), []);
+  const doneGear = allGearItems.filter((i) => obtainedGear[i.id]).length;
 
   return (
     <div className="space-y-6">
@@ -48,7 +54,7 @@ export function DashboardPage() {
         </Panel>
       )}
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Link to="/goals">
           <Panel className="h-full hover:border-amber-700/60">
             <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
@@ -88,6 +94,21 @@ export function DashboardPage() {
             <p className="mt-3 text-xs text-slate-500">
               Herb, tree, fruit tree, calquat, celastrus, hardwood, allotment &amp; flower
             </p>
+          </Panel>
+        </Link>
+
+        <Link to="/gear">
+          <Panel className="h-full hover:border-amber-700/60">
+            <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
+              Gear Progression
+            </h2>
+            <p className="mt-2 text-2xl font-semibold text-slate-100">
+              {doneGear}/{allGearItems.length}
+            </p>
+            <ProgressBar
+              value={allGearItems.length ? (doneGear / allGearItems.length) * 100 : 0}
+              className="mt-3"
+            />
           </Panel>
         </Link>
       </div>

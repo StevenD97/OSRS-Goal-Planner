@@ -15,6 +15,11 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   Fruit Tree, Calquat, Celastrus, Hardwood, Allotment, and Flower runs, compiled
   from the [OSRS Wiki's Farming runs guide](https://oldschool.runescape.wiki/w/Farming_runs).
   Each checklist persists and auto-resets daily, same as the Dailies page.
+- **Gear Progression** - an ironman-focused gear progression guide (11 tiers,
+  early game through 2026 endgame content), with an "All Gear" view plus
+  Melee/Ranged/Magic/Shared tabs. Each item lists how an ironman actually
+  obtains it (drop/quest/minigame/craft) and can be checked off as obtained -
+  progress persists and shows on the Dashboard.
 - **WikiSync integration** - link your RSN and the app pulls your live quest,
   achievement diary, combat achievement, and collection log completion status
   from [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) (the
@@ -98,6 +103,17 @@ some specifics - exact protection-payment items for hardwood trees and the
 calquat patch in particular - are flagged inline as worth double-checking
 in-game or against the wiki. Everything else (herb run, tree run, fruit tree
 run, celastrus's 8x potato cactus payment) was corroborated via research.
+
+### Gear progression data currency
+
+`client/src/data/gearProgression.ts` was compiled via web research in mid-2026
+(OSRS Wiki item/boss pages + current ironman progression guides), not a live
+wiki fetch - this sandbox's network policy blocked direct access to most
+gear-guide sites, including the wiki itself. Core raid/GWD/DT2 content is
+well-established and stable; the newest tier ("Endgame" - Yama, Doom of
+Mokhaiotl) is flagged as worth double-checking in-game since it's the part
+most likely to drift as the game updates. OSRS gets new bosses/gear every
+few months, so this file will need periodic re-review regardless.
 
 ### Being a good API citizen
 

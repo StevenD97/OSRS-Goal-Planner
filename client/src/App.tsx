@@ -5,6 +5,7 @@ import { GoalsPage } from "./pages/GoalsPage";
 import { DailiesPage } from "./pages/DailiesPage";
 import { FarmRunsPage } from "./pages/FarmRunsPage";
 import { FarmRunDetailPage } from "./pages/FarmRunDetailPage";
+import { GearProgressionPage } from "./pages/GearProgressionPage";
 import { SettingsPage } from "./pages/SettingsPage";
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/dailies" element={<DailiesPage />} />
         <Route path="/farm-runs" element={<FarmRunsPage />} />
         <Route path="/farm-runs/:runId" element={<FarmRunDetailPage />} />
+        <Route path="/gear" element={<GearProgressionPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </Layout>

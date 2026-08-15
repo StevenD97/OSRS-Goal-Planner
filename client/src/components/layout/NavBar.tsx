@@ -7,6 +7,7 @@ const LINKS = [
   { to: "/goals", label: "Goals" },
   { to: "/dailies", label: "Dailies" },
   { to: "/farm-runs", label: "Farm Runs" },
+  { to: "/gear", label: "Gear" },
   { to: "/settings", label: "Settings" },
 ];
 
