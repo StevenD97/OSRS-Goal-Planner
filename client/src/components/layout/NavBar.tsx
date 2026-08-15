@@ -1,0 +1,55 @@
+import { NavLink } from "react-router-dom";
+import { clsx } from "clsx";
+import { useAccountStore } from "../../state/useAccountStore";
+
+const LINKS = [
+  { to: "/", label: "Dashboard", end: true },
+  { to: "/goals", label: "Goals" },
+  { to: "/dailies", label: "Dailies" },
+  { to: "/farm-runs", label: "Farm Runs" },
+  { to: "/settings", label: "Settings" },
+];
+
+export function NavBar() {
+  const rsn = useAccountStore((s) => s.rsn);
+
+  return (
+    <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-6">
+          <span className="text-lg font-semibold tracking-tight text-amber-400">
+            OSRS Goal Planner
+          </span>
+          <nav className="flex gap-1">
+            {LINKS.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.end}
+                className={({ isActive }) =>
+                  clsx(
+                    "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-amber-500/10 text-amber-400"
+                      : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-200",
+                  )
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+        <div className="text-sm text-slate-400">
+          {rsn ? (
+            <span>
+              Tracking <span className="font-medium text-slate-200">{rsn}</span>
+            </span>
+          ) : (
+            <span className="italic">No RSN linked</span>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
