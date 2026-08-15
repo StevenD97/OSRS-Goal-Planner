@@ -87,6 +87,18 @@ Scorching bow's Tormented Demons access) and those 27 are deliberately left
 as leaves rather than expanded further - see the comment at the top of
 `data/quests.ts` before extending this.
 
+## Static UI preview
+
+`npm run build:artifact --workspace=client` produces a single self-contained
+HTML file (`client/dist-artifact/index.html`, via `vite-plugin-singlefile`)
+with everything inlined - no server required. Routing uses `HashRouter` so
+it works from a `file://` URL or any static host without SPA-fallback
+config. Useful for sharing a click-through preview of the UI - Hiscores/
+WikiSync sync won't work in this mode since there's no backend to proxy
+through, but everything else (Goals, Dailies, Farm Runs, Gear Progression,
+Action Tracker, Settings roster management) runs entirely off localStorage
+and works normally.
+
 ## Running it
 
 ```bash
