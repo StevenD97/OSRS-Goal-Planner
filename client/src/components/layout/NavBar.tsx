@@ -8,11 +8,12 @@ const LINKS = [
   { to: "/dailies", label: "Dailies" },
   { to: "/farm-runs", label: "Farm Runs" },
   { to: "/gear", label: "Gear" },
+  { to: "/action-tracker", label: "Action Tracker" },
   { to: "/settings", label: "Settings" },
 ];
 
 export function NavBar() {
-  const rsn = useAccountStore((s) => s.rsn);
+  const members = useAccountStore((s) => s.members);
 
   return (
     <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
@@ -42,12 +43,17 @@ export function NavBar() {
           </nav>
         </div>
         <div className="text-sm text-slate-400">
-          {rsn ? (
+          {members.length === 0 ? (
+            <span className="italic">No accounts linked</span>
+          ) : members.length === 1 ? (
             <span>
-              Tracking <span className="font-medium text-slate-200">{rsn}</span>
+              Tracking <span className="font-medium text-slate-200">{members[0].rsn}</span>
             </span>
           ) : (
-            <span className="italic">No RSN linked</span>
+            <span>
+              Tracking group of{" "}
+              <span className="font-medium text-slate-200">{members.length}</span>
+            </span>
           )}
         </div>
       </div>

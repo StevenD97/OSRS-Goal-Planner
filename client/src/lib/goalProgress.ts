@@ -1,6 +1,6 @@
 import type { Goal } from "../types/goals";
-import type { HiscoresResult } from "../types/hiscores";
-import type { WikiSyncNormalized } from "../types/wikisync";
+import type { GroupMember } from "../state/useAccountStore";
+import { aggregateSkillLevel, aggregateActivityScore, isWikiSyncItemCompletedByGroup } from "./groupAggregate";
 
 export interface GoalStatus {
   completed: boolean;
@@ -12,11 +12,8 @@ export interface GoalStatus {
   synced: boolean;
 }
 
-export function getGoalStatus(
-  goal: Goal,
-  hiscores: HiscoresResult | null,
-  wikisync: WikiSyncNormalized | null,
-): GoalStatus {
+/** A goal is complete if ANY linked group member satisfies it - see lib/groupAggregate.ts. */
+export function getGoalStatus(goal: Goal, members: GroupMember[]): GoalStatus {
   const { source, manualCompleted } = goal;
 
   if (source.type === "manual") {
@@ -24,36 +21,31 @@ export function getGoalStatus(
   }
 
   if (source.type === "skill") {
-    const entry = hiscores?.skills.find((s) => s.name === source.skill);
-    if (!entry || entry.level < 0) {
+    const level = aggregateSkillLevel(members, source.skill);
+    if (level < 0) {
       return { completed: manualCompleted, progress: manualCompleted ? 100 : 0, synced: false };
     }
-    const completed = manualCompleted || entry.level >= source.targetLevel;
-    const progress = Math.min(100, (entry.level / source.targetLevel) * 100);
-    return { completed, progress, caption: `${entry.level}/${source.targetLevel}`, synced: true };
+    const completed = manualCompleted || level >= source.targetLevel;
+    const progress = Math.min(100, (level / source.targetLevel) * 100);
+    return { completed, progress, caption: `${level}/${source.targetLevel}`, synced: true };
   }
 
   if (source.type === "activity") {
-    const entry = hiscores?.activities.find((a) => a.name === source.activity);
-    if (!entry || entry.score < 0) {
+    const score = aggregateActivityScore(members, source.activity);
+    if (score < 0) {
       return { completed: manualCompleted, progress: manualCompleted ? 100 : 0, synced: false };
     }
-    const completed = manualCompleted || entry.score >= source.targetScore;
-    const progress = Math.min(100, (entry.score / source.targetScore) * 100);
-    return {
-      completed,
-      progress,
-      caption: `${entry.score}/${source.targetScore}`,
-      synced: true,
-    };
+    const completed = manualCompleted || score >= source.targetScore;
+    const progress = Math.min(100, (score / source.targetScore) * 100);
+    return { completed, progress, caption: `${score}/${source.targetScore}`, synced: true };
   }
 
   // source.type === "wikisync"
-  const items = wikisync?.categories[source.category];
-  const item = items?.find((i) => i.id === source.itemId);
-  if (!item) {
+  const hasAnySync = members.some((m) => m.wikisync);
+  if (!hasAnySync) {
     return { completed: manualCompleted, progress: manualCompleted ? 100 : 0, synced: false };
   }
-  const completed = manualCompleted || item.completed;
+  const completed =
+    manualCompleted || isWikiSyncItemCompletedByGroup(members, source.category, source.itemId);
   return { completed, progress: completed ? 100 : 0, synced: true };
 }

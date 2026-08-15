@@ -6,6 +6,7 @@ import { DailiesPage } from "./pages/DailiesPage";
 import { FarmRunsPage } from "./pages/FarmRunsPage";
 import { FarmRunDetailPage } from "./pages/FarmRunDetailPage";
 import { GearProgressionPage } from "./pages/GearProgressionPage";
+import { ActionTrackerPage } from "./pages/ActionTrackerPage";
 import { SettingsPage } from "./pages/SettingsPage";
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/farm-runs" element={<FarmRunsPage />} />
         <Route path="/farm-runs/:runId" element={<FarmRunDetailPage />} />
         <Route path="/gear" element={<GearProgressionPage />} />
+        <Route path="/action-tracker" element={<ActionTrackerPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </Layout>

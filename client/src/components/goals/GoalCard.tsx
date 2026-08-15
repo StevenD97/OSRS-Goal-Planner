@@ -8,12 +8,11 @@ import { Badge } from "../common/Badge";
 import { ProgressBar } from "../common/ProgressBar";
 
 export function GoalCard({ goal }: { goal: Goal }) {
-  const hiscores = useAccountStore((s) => s.hiscores);
-  const wikisync = useAccountStore((s) => s.wikisync);
+  const members = useAccountStore((s) => s.members);
   const setManualCompleted = useGoalsStore((s) => s.setManualCompleted);
   const removeGoal = useGoalsStore((s) => s.removeGoal);
 
-  const status = getGoalStatus(goal, hiscores, wikisync);
+  const status = getGoalStatus(goal, members);
 
   return (
     <li

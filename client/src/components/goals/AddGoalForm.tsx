@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { SKILLS } from "../../data/skills";
 import { useAccountStore } from "../../state/useAccountStore";
 import { useGoalsStore } from "../../state/useGoalsStore";
+import { aggregateWikiSyncCategory } from "../../lib/groupAggregate";
 import type { GoalCategory } from "../../types/goals";
 import type { WikiSyncCategory } from "../../types/wikisync";
 
@@ -18,7 +19,7 @@ export function AddGoalForm() {
   const [open, setOpen] = useState(false);
   const [kind, setKind] = useState<GoalKind>("skill");
   const addGoal = useGoalsStore((s) => s.addGoal);
-  const wikisync = useAccountStore((s) => s.wikisync);
+  const members = useAccountStore((s) => s.members);
 
   const [skill, setSkill] = useState<string>(SKILLS[0]);
   const [targetLevel, setTargetLevel] = useState(99);
@@ -32,8 +33,8 @@ export function AddGoalForm() {
   const [customTitle, setCustomTitle] = useState("");
 
   const wikisyncItems = useMemo(
-    () => wikisync?.categories[wikisyncCategory] ?? [],
-    [wikisync, wikisyncCategory],
+    () => aggregateWikiSyncCategory(members, wikisyncCategory),
+    [members, wikisyncCategory],
   );
 
   function reset() {
@@ -169,9 +170,9 @@ export function AddGoalForm() {
 
         {kind === "wikisync" && (
           <div className="space-y-2">
-            {!wikisync && (
+            {!members.some((m) => m.wikisync) && (
               <p className="text-xs text-amber-400">
-                Sync your RSN on the Settings page first to pick from your live quest/diary/CA
+                Sync an account on the Settings page first to pick from your live quest/diary/CA
                 list.
               </p>
             )}

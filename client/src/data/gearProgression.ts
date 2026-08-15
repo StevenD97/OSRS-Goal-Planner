@@ -96,6 +96,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "shared",
         source: "Recipe for Disaster (quest) - best gloves in the game until Ferocious/Zaryte specialise by style",
         requirements: "Recipe for Disaster completion",
+        requires: [{ type: "quest", questId: "recipe-for-disaster" }],
       },
       {
         id: "fg-torso",
@@ -179,6 +180,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         source: "Zenyte shard from Demonic Gorillas (1/300ish per shard, needs 4)",
         requirements: "Monkey Madness II completion for Demonic Gorilla access",
         notes: "Torture = melee neck, Anguish = ranged neck, Tormented bracelet = magic wrist, Ring of Suffering = universal defensive ring.",
+        requires: [{ type: "quest", questId: "monkey-madness-2" }],
       },
     ],
   },
@@ -195,6 +197,10 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "ranged",
         source: "Corrupted Gauntlet (Prifddinas)",
         requirements: "Song of the Elves; Crystal shards from repeated Gauntlet completions",
+        requires: [
+          { type: "quest", questId: "song-of-the-elves" },
+          { type: "other", label: "Repeat the Corrupted Gauntlet for Crystal shards to fund the bow/armour" },
+        ],
       },
       {
         id: "gc-armor",
@@ -203,6 +209,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "ranged",
         source: "Corrupted Gauntlet - degradable crystal armour, repaired with crystal shards",
         notes: "Crystal armour + Bowfa out-DPSes Masori when using the Bowfa specifically.",
+        requires: [{ type: "quest", questId: "song-of-the-elves" }],
       },
     ],
   },
@@ -425,6 +432,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         source: "Drops from all four DT2 bosses",
         requirements: "Desert Treasure II completion",
         notes: "BIS for powered staves and Ancient Magicks (e.g. paired with Shadow or an Ancient sceptre); Ancestral still edges it out for standard-spellbook damage%.",
+        requires: [{ type: "quest", questId: "desert-treasure-2" }],
       },
       {
         id: "dt2-ring-melee",
@@ -433,6 +441,11 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Vardorvis vestige + 90 Magic/80 Crafting (both boostable) to craft",
         notes: "Highest Strength bonus of any ring.",
+        requires: [
+          { type: "quest", questId: "desert-treasure-2" },
+          { type: "skill", skill: "Magic", level: 90 },
+          { type: "skill", skill: "Crafting", level: 80 },
+        ],
       },
       {
         id: "dt2-ring-ranged",
@@ -441,6 +454,11 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "ranged",
         source: "The Leviathan vestige + crafting",
         notes: "First ring to offer Ranged Strength.",
+        requires: [
+          { type: "quest", questId: "desert-treasure-2" },
+          { type: "skill", skill: "Magic", level: 90 },
+          { type: "skill", skill: "Crafting", level: 80 },
+        ],
       },
       {
         id: "dt2-ring-magic",
@@ -449,6 +467,11 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "magic",
         source: "Duke Sucellus vestige + crafting",
         notes: "First ring to offer Magic Damage.",
+        requires: [
+          { type: "quest", questId: "desert-treasure-2" },
+          { type: "skill", skill: "Magic", level: 90 },
+          { type: "skill", skill: "Crafting", level: 80 },
+        ],
       },
       {
         id: "dt2-ring-hybrid",
@@ -457,6 +480,11 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "The Whisperer vestige + crafting",
         notes: "Slash-focused melee accuracy/strength ring.",
+        requires: [
+          { type: "quest", questId: "desert-treasure-2" },
+          { type: "skill", skill: "Magic", level: 90 },
+          { type: "skill", skill: "Crafting", level: 80 },
+        ],
       },
       {
         id: "dt2-melee-weapon",
@@ -464,6 +492,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Executioner's axe",
         style: "melee",
         source: "Vardorvis drop",
+        requires: [{ type: "quest", questId: "desert-treasure-2" }],
       },
     ],
   },
@@ -471,7 +500,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
     id: "slayer-bosses",
     order: 10,
     name: "Slayer Bosses",
-    description: "Araxxor is the standout upgrade source from this tier for melee accounts.",
+    description: "Araxxor is the standout upgrade source from this tier for melee accounts; the Scorching bow is a strong ranged demonbane pickup.",
     items: [
       {
         id: "sb-weapon",
@@ -480,6 +509,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Araxxor - assembled from noxious point + blade + pommel drops (each 1/200, no duplicates until the set completes)",
         requirements: "92 Slayer to fight Araxxor",
+        requires: [{ type: "skill", skill: "Slayer", level: 92 }],
       },
       {
         id: "sb-neck",
@@ -487,6 +517,21 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Amulet of rancour",
         style: "melee",
         source: "Combine Araxyte fang (Araxxor drop) with an Amulet of torture",
+        requires: [{ type: "skill", skill: "Slayer", level: 92 }],
+      },
+      {
+        id: "sb-ranged-weapon",
+        slot: "weapon",
+        item: "Scorching bow",
+        style: "ranged",
+        source: "Craft: use a Tormented synapse (rare Tormented Demon drop, ~1/500) on a Magic longbow (u), after reading Duradel's notes",
+        requirements: "While Guthix Sleeps completion; 74 Fletching (boostable)",
+        notes: "Demonbane weapon - 30% accuracy/damage vs demons, stacking with a Slayer helm(i)/black mask(i) for 45% total on demon tasks and demon bosses (Tormented Demons, Yama).",
+        requires: [
+          { type: "quest", questId: "while-guthix-sleeps" },
+          { type: "skill", skill: "Fletching", level: 74 },
+          { type: "other", label: "Kill Tormented Demons (Ancient Guthixian Temple) for a Tormented synapse drop" },
+        ],
       },
     ],
   },
@@ -504,6 +549,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Nex (God Wars Dungeon, Ancient Prison)",
         notes: "Highest non-degrading Strength bonus of any armour.",
+        requires: [{ type: "quest", questId: "the-frozen-door" }],
       },
       {
         id: "eg2-ranged-weapon",
@@ -512,6 +558,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "ranged",
         source: "Nex drop",
         notes: "Where Tbow accuracy falls off, and essential for enchanted-bolt-special content.",
+        requires: [{ type: "quest", questId: "the-frozen-door" }],
       },
       {
         id: "eg2-ranged-gloves",
@@ -520,6 +567,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "ranged",
         source: "Nex drop",
         notes: "Only gloves with a Ranged Strength bonus.",
+        requires: [{ type: "quest", questId: "the-frozen-door" }],
       },
       {
         id: "eg2-cape",
@@ -535,8 +583,12 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Oathplate armour (helm/chest/legs)",
         style: "melee",
         source: "Yama drop, or smithed from Oathplate shards (Yama drop) + Infernal shale (mineable)",
-        requirements: "78 Defence to wear",
+        requirements: "A Kingdom Divided completion; 78 Defence to wear; 78 Mining/83 Smithing to self-smith (both boostable)",
         notes: "BIS slash armour - a strong alternative to Torva depending on attack style.",
+        requires: [
+          { type: "quest", questId: "a-kingdom-divided" },
+          { type: "skill", skill: "Defence", level: 78 },
+        ],
       },
       {
         id: "eg2-yama-support",
@@ -545,6 +597,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "shared",
         source: "Yama drop",
         notes: "Support special attack that boosts allies' next melee hit - group content utility.",
+        requires: [{ type: "quest", questId: "a-kingdom-divided" }],
       },
       {
         id: "eg2-dom-boots",
@@ -553,6 +606,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "shared",
         source: "Doom of Mokhaiotl (The Doom, Mount Karuulm)",
         notes: "Hybrid boots that overtook Primordial boots as the general-purpose choice.",
+        requires: [{ type: "quest", questId: "the-final-dawn" }],
       },
     ],
   },

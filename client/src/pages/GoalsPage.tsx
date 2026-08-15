@@ -12,8 +12,7 @@ const ALL = "all" as const;
 
 export function GoalsPage() {
   const goals = useGoalsStore((s) => s.goals);
-  const hiscores = useAccountStore((s) => s.hiscores);
-  const wikisync = useAccountStore((s) => s.wikisync);
+  const members = useAccountStore((s) => s.members);
   const [filter, setFilter] = useState<GoalCategory | typeof ALL>(ALL);
 
   const visibleGoals = useMemo(
@@ -22,8 +21,8 @@ export function GoalsPage() {
   );
 
   const completedCount = useMemo(
-    () => goals.filter((g) => getGoalStatus(g, hiscores, wikisync).completed).length,
-    [goals, hiscores, wikisync],
+    () => goals.filter((g) => getGoalStatus(g, members).completed).length,
+    [goals, members],
   );
 
   const categoriesUsed = useMemo(

@@ -20,6 +20,17 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   Melee/Ranged/Magic/Shared tabs. Each item lists how an ironman actually
   obtains it (drop/quest/minigame/craft) and can be checked off as obtained -
   progress persists and shows on the Dashboard.
+- **Action Tracker** - click "Aim for this next" on any Gear Progression item
+  and it recursively expands every unmet requirement - quests, and the
+  quests those quests need, and skill levels - into an ordered, step-by-step
+  plan ending in the item itself. Quest/skill steps auto-check themselves
+  against synced Hiscores/WikiSync data; everything else is a manual
+  checkbox. See "How the Action Tracker works" below.
+- **Group Ironman support** - link a whole GIM roster (paste names in bulk,
+  or add one at a time) instead of a single account. Every requirement check
+  - Goals, gear-obtained state, Action Tracker steps - is satisfied if *any*
+  linked member meets it, since gear and unlocks are effectively pooled on a
+  real GIM team.
 - **WikiSync integration** - link your RSN and the app pulls your live quest,
   achievement diary, combat achievement, and collection log completion status
   from [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) (the
@@ -43,13 +54,38 @@ below.
 ### Data flow
 
 ```
-Settings page -> useAccountStore.sync()
+Settings page -> useAccountStore.syncAll() (loops every linked GroupMember)
   -> GET /api/hiscores/:rsn   -> server -> secure.runescape.com (official, no auth)
   -> GET /api/wikisync/:rsn   -> server -> sync.runescape.wiki (community, no auth)
        -> normalized by lib/wikisyncMapper.ts
-Goals / Dashboard read from useAccountStore + lib/goalProgress.ts to decide
-whether a given goal is complete.
+Goals / Dashboard read useAccountStore.members + lib/goalProgress.ts, which
+delegates to lib/groupAggregate.ts to decide whether ANY member satisfies a
+given goal.
 ```
+
+### How the Action Tracker works
+
+`client/src/lib/actionPlan.ts` walks a gear item's `requires: Requirement[]`
+(quest / skill / other) depth-first against the quest registry in
+`client/src/data/quests.ts`: a quest's own prerequisite quests are resolved
+before the quest itself, skill mentions are merged to their highest required
+level, and the target item is always the final step. The result is a flat,
+ordered, deduplicated `PlanStep[]` - quest and skill steps auto-check
+themselves against `lib/groupAggregate.ts` (met by any linked group member),
+the final `gearItem` step mirrors the Gear Progression "obtained" checkbox
+directly (checking either one checks both), and everything else falls back
+to a manual per-step checkbox in `useActionTrackerStore`.
+
+The quest registry is **not** a full graph of all ~200 OSRS quests - it only
+maps prerequisite chains for quests referenced by tracked gear (Recipe for
+Disaster, Monkey Madness II, Song of the Elves, Desert Treasure I & II, The
+Frozen Door, The Final Dawn, While Guthix Sleeps, etc.), researched via the
+OSRS Wiki. A quest not in the registry still gets added as a required step -
+it just won't expand into its own sub-prerequisites. While Guthix Sleeps is
+the deepest chain currently mapped (27 prerequisite quests, needed for the
+Scorching bow's Tormented Demons access) and those 27 are deliberately left
+as leaves rather than expanded further - see the comment at the top of
+`data/quests.ts` before extending this.
 
 ## Running it
 
@@ -114,6 +150,18 @@ well-established and stable; the newest tier ("Endgame" - Yama, Doom of
 Mokhaiotl) is flagged as worth double-checking in-game since it's the part
 most likely to drift as the game updates. OSRS gets new bosses/gear every
 few months, so this file will need periodic re-review regardless.
+
+### Group Ironman is modeled as a pooled resource, not simulated per-account
+
+Quest completion and skill levels are technically per-character in the real
+game - one member can't inherit another's Fletching level. This planner
+deliberately simplifies that: any requirement (quest, skill level, item) is
+treated as "met" if *any* linked member satisfies it, because in practice a
+GIM team divides labor and trades gear/materials freely. That's the right
+model for "can our group get this," but it won't tell you *which* member
+still needs to personally do something (e.g. reach 74 Fletching to attach
+the Tormented synapse) - you'll need to track that division of labor
+yourselves.
 
 ### Being a good API citizen
 

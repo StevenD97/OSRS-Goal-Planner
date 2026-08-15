@@ -1,3 +1,5 @@
+import type { Requirement } from "./requirement";
+
 export type CombatStyle = "melee" | "ranged" | "magic" | "shared";
 
 export type GearSlot =
@@ -43,7 +45,10 @@ export interface GearProgressionItem {
   style: CombatStyle;
   /** How an ironman actually obtains this - the important bit, since GE buying isn't an option. */
   source: string;
+  /** Free-text summary shown in the UI, e.g. "78 Defence to wear". */
   requirements?: string;
+  /** Structured prerequisites used by the Action Tracker to build a step-by-step plan. */
+  requires?: Requirement[];
   notes?: string;
 }
 

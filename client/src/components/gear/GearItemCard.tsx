@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import { clsx } from "clsx";
 import type { GearProgressionItem } from "../../types/gearProgression";
 import { SLOT_LABELS, STYLE_LABELS } from "../../types/gearProgression";
 import { Badge } from "../common/Badge";
 import { useGearProgressionStore } from "../../state/useGearProgressionStore";
+import { useActionTrackerStore } from "../../state/useActionTrackerStore";
 
 const STYLE_TONE = {
   melee: "red",
@@ -14,6 +16,8 @@ const STYLE_TONE = {
 export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgressionItem; showStyleBadge?: boolean }) {
   const obtained = useGearProgressionStore((s) => !!s.obtained[item.id]);
   const toggle = useGearProgressionStore((s) => s.toggle);
+  const hasPlan = useActionTrackerStore((s) => s.hasPlanForItem(item.id));
+  const addPlan = useActionTrackerStore((s) => s.addPlan);
 
   return (
     <li
@@ -50,6 +54,22 @@ export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgre
         )}
         {item.notes && <p className="mt-0.5 text-xs text-slate-500 italic">{item.notes}</p>}
       </div>
+      {!obtained &&
+        (hasPlan ? (
+          <Link
+            to="/action-tracker"
+            className="flex-none self-start rounded-md border border-amber-700/60 px-2.5 py-1 text-xs font-medium text-amber-400 hover:bg-amber-500/10"
+          >
+            In tracker &rarr;
+          </Link>
+        ) : (
+          <button
+            onClick={() => addPlan(item)}
+            className="flex-none self-start rounded-md border border-slate-700 px-2.5 py-1 text-xs font-medium text-slate-300 hover:border-amber-700/60 hover:text-amber-400"
+          >
+            Aim for this next
+          </button>
+        ))}
     </li>
   );
 }
