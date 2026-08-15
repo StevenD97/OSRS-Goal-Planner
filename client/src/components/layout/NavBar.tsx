@@ -16,10 +16,10 @@ export function NavBar() {
   const members = useAccountStore((s) => s.members);
 
   return (
-    <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+    <header className="sticky top-0 z-10 border-b border-line bg-canvas/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
-          <span className="text-lg font-semibold tracking-tight text-amber-400">
+          <span className="font-display text-lg font-semibold tracking-tight text-accent">
             OSRS Goal Planner
           </span>
           <nav className="flex gap-1">
@@ -30,10 +30,10 @@ export function NavBar() {
                 end={link.end}
                 className={({ isActive }) =>
                   clsx(
-                    "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                    "rounded-row px-3 py-1.5 text-sm font-medium transition-colors",
                     isActive
-                      ? "bg-amber-500/10 text-amber-400"
-                      : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-200",
+                      ? "bg-accent-soft text-accent"
+                      : "text-muted hover:bg-surface-2 hover:text-ink",
                   )
                 }
               >
@@ -42,17 +42,17 @@ export function NavBar() {
             ))}
           </nav>
         </div>
-        <div className="text-sm text-slate-400">
+        <div className="text-sm text-muted">
           {members.length === 0 ? (
             <span className="italic">No accounts linked</span>
           ) : members.length === 1 ? (
             <span>
-              Tracking <span className="font-medium text-slate-200">{members[0].rsn}</span>
+              Tracking <span className="font-medium text-ink">{members[0].rsn}</span>
             </span>
           ) : (
             <span>
               Tracking group of{" "}
-              <span className="font-medium text-slate-200">{members.length}</span>
+              <span className="font-medium text-ink">{members.length}</span>
             </span>
           )}
         </div>

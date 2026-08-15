@@ -16,26 +16,26 @@ export function DailyRow({
   return (
     <li
       className={clsx(
-        "flex items-center gap-3 rounded-md border px-3 py-2",
-        checked ? "border-emerald-800 bg-emerald-500/5" : "border-slate-800 bg-slate-900/40",
+        "flex items-center gap-3 rounded-row border px-3 py-2",
+        checked ? "border-accent/30 bg-accent-soft" : "border-line bg-surface-2",
       )}
     >
       <input
         type="checkbox"
         checked={checked}
         onChange={onToggle}
-        className="h-4 w-4 flex-none accent-amber-500"
+        className="h-4 w-4 flex-none accent-accent"
       />
       <div className="flex-1">
-        <span className={clsx(checked ? "text-emerald-400 line-through" : "text-slate-100")}>
+        <span className={clsx(checked ? "text-accent line-through" : "text-ink")}>
           {task.label}
         </span>
-        {task.notes && <p className="text-xs text-slate-500">{task.notes}</p>}
+        {task.notes && <p className="text-xs text-muted">{task.notes}</p>}
       </div>
       {task.farmRunId && (
         <Link
           to={`/farm-runs/${task.farmRunId}`}
-          className="flex-none text-xs text-amber-400 hover:underline"
+          className="flex-none text-xs text-accent hover:underline"
         >
           Open checklist &rarr;
         </Link>
@@ -43,7 +43,7 @@ export function DailyRow({
       {onRemove && (
         <button
           onClick={onRemove}
-          className="flex-none text-xs text-slate-500 hover:text-rose-400"
+          className="flex-none text-xs text-muted hover:text-danger"
           aria-label="Remove task"
         >
           Remove

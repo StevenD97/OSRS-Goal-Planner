@@ -6,13 +6,6 @@ import { Badge } from "../common/Badge";
 import { useGearProgressionStore } from "../../state/useGearProgressionStore";
 import { useActionTrackerStore } from "../../state/useActionTrackerStore";
 
-const STYLE_TONE = {
-  melee: "red",
-  ranged: "green",
-  magic: "blue",
-  shared: "amber",
-} as const;
-
 export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgressionItem; showStyleBadge?: boolean }) {
   const obtained = useGearProgressionStore((s) => !!s.obtained[item.id]);
   const toggle = useGearProgressionStore((s) => s.toggle);
@@ -22,15 +15,15 @@ export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgre
   return (
     <li
       className={clsx(
-        "flex items-start gap-3 rounded-lg border p-3",
-        obtained ? "border-emerald-800 bg-emerald-500/5" : "border-slate-800 bg-slate-900/40",
+        "flex items-start gap-3 rounded-panel border p-3",
+        obtained ? "border-accent/30 bg-accent-soft" : "border-line bg-surface-2",
       )}
     >
       <input
         type="checkbox"
         checked={obtained}
         onChange={() => toggle(item.id)}
-        className="mt-1 h-4 w-4 flex-none accent-amber-500"
+        className="mt-1 h-4 w-4 flex-none accent-accent"
         title="Mark as obtained"
       />
       <div className="flex-1">
@@ -38,34 +31,34 @@ export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgre
           <span
             className={clsx(
               "font-medium",
-              obtained ? "text-emerald-400 line-through" : "text-slate-100",
+              obtained ? "text-accent line-through" : "text-ink",
             )}
           >
             {item.item}
           </span>
           <Badge tone="neutral">{SLOT_LABELS[item.slot]}</Badge>
           {showStyleBadge && (
-            <Badge tone={STYLE_TONE[item.style]}>{STYLE_LABELS[item.style]}</Badge>
+            <Badge tone={item.style}>{STYLE_LABELS[item.style]}</Badge>
           )}
         </div>
-        <p className="mt-1 text-sm text-slate-400">{item.source}</p>
+        <p className="mt-1 text-sm text-muted">{item.source}</p>
         {item.requirements && (
-          <p className="mt-0.5 text-xs text-slate-500">Requires: {item.requirements}</p>
+          <p className="mt-0.5 text-xs text-muted">Requires: {item.requirements}</p>
         )}
-        {item.notes && <p className="mt-0.5 text-xs text-slate-500 italic">{item.notes}</p>}
+        {item.notes && <p className="mt-0.5 text-xs text-muted italic">{item.notes}</p>}
       </div>
       {!obtained &&
         (hasPlan ? (
           <Link
             to="/action-tracker"
-            className="flex-none self-start rounded-md border border-amber-700/60 px-2.5 py-1 text-xs font-medium text-amber-400 hover:bg-amber-500/10"
+            className="flex-none self-start rounded-row border border-accent px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent-soft"
           >
             In tracker &rarr;
           </Link>
         ) : (
           <button
             onClick={() => addPlan(item)}
-            className="flex-none self-start rounded-md border border-slate-700 px-2.5 py-1 text-xs font-medium text-slate-300 hover:border-amber-700/60 hover:text-amber-400"
+            className="flex-none self-start rounded-row border border-line-strong px-2.5 py-1 text-xs font-medium text-ink-2 hover:border-accent hover:text-accent"
           >
             Aim for this next
           </button>

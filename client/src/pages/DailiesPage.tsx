@@ -23,14 +23,14 @@ export function DailiesPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Dailies</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-ink">Dailies</h1>
+          <p className="mt-1 text-sm text-muted">
             Resets every day at 00:00 UTC (the OSRS daily reset).
           </p>
         </div>
         <div className="flex min-w-[200px] items-center gap-2">
           <ProgressBar value={allTasks.length ? (done / allTasks.length) * 100 : 0} />
-          <span className="flex-none text-sm text-slate-400">
+          <span className="flex-none text-sm text-muted">
             {done}/{allTasks.length}
           </span>
         </div>
@@ -42,7 +42,7 @@ export function DailiesPage() {
           if (tasks.length === 0) return null;
           return (
             <div key={category}>
-              <h2 className="mb-2 text-sm font-semibold tracking-wide text-slate-400 uppercase">
+              <h2 className="mb-2 text-sm font-semibold tracking-wide text-muted uppercase">
                 {category}
               </h2>
               <Panel>
@@ -78,11 +78,11 @@ export function DailiesPage() {
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
           placeholder="Add a custom daily task..."
-          className="flex-1 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-600 focus:outline-none"
+          className="flex-1 rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-accent focus:outline-none"
         />
         <button
           type="submit"
-          className="rounded-md bg-amber-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-amber-400"
+          className="rounded-row bg-accent px-4 py-2 text-sm font-medium text-on-accent hover:bg-accent-strong"
         >
           Add
         </button>

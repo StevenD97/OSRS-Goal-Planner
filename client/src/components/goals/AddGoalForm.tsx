@@ -89,7 +89,7 @@ export function AddGoalForm() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="rounded-md bg-amber-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-amber-400"
+        className="rounded-row bg-accent px-4 py-2 text-sm font-medium text-on-accent hover:bg-accent-strong"
       >
         + Add goal
       </button>
@@ -99,7 +99,7 @@ export function AddGoalForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-slate-800 bg-slate-900/60 p-4"
+      className="rounded-panel border border-line bg-surface p-4"
     >
       <div className="flex flex-wrap gap-2">
         {(
@@ -116,8 +116,8 @@ export function AddGoalForm() {
             onClick={() => setKind(value)}
             className={`rounded-full px-3 py-1 text-xs font-medium ${
               kind === value
-                ? "bg-amber-500 text-slate-950"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                ? "bg-accent text-on-accent"
+                : "bg-surface-2 text-ink-2 hover:bg-line-strong"
             }`}
           >
             {label}
@@ -131,7 +131,7 @@ export function AddGoalForm() {
             <select
               value={skill}
               onChange={(e) => setSkill(e.target.value)}
-              className="rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+              className="rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink"
             >
               {SKILLS.map((s) => (
                 <option key={s} value={s}>
@@ -145,7 +145,7 @@ export function AddGoalForm() {
               max={99}
               value={targetLevel}
               onChange={(e) => setTargetLevel(Number(e.target.value))}
-              className="w-24 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+              className="w-24 rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink"
             />
           </div>
         )}
@@ -156,14 +156,14 @@ export function AddGoalForm() {
               value={activityName}
               onChange={(e) => setActivityName(e.target.value)}
               placeholder="Boss/activity name (as shown on hiscores)"
-              className="min-w-[220px] flex-1 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"
+              className="min-w-[220px] flex-1 rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted"
             />
             <input
               type="number"
               min={1}
               value={targetScore}
               onChange={(e) => setTargetScore(Number(e.target.value))}
-              className="w-24 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+              className="w-24 rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink"
             />
           </div>
         )}
@@ -171,7 +171,7 @@ export function AddGoalForm() {
         {kind === "wikisync" && (
           <div className="space-y-2">
             {!members.some((m) => m.wikisync) && (
-              <p className="text-xs text-amber-400">
+              <p className="text-xs text-accent">
                 Sync an account on the Settings page first to pick from your live quest/diary/CA
                 list.
               </p>
@@ -180,7 +180,7 @@ export function AddGoalForm() {
               <select
                 value={wikisyncCategory}
                 onChange={(e) => setWikisyncCategory(e.target.value as WikiSyncCategory)}
-                className="rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+                className="rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink"
               >
                 {WIKISYNC_CATEGORY_OPTIONS.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -191,7 +191,7 @@ export function AddGoalForm() {
               <select
                 value={wikisyncItemId}
                 onChange={(e) => setWikisyncItemId(e.target.value)}
-                className="min-w-[220px] flex-1 rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100"
+                className="min-w-[220px] flex-1 rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink"
               >
                 <option value="">Select an item...</option>
                 {wikisyncItems.map((item) => (
@@ -209,7 +209,7 @@ export function AddGoalForm() {
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
             placeholder="Goal title, e.g. 'Get 500m GP'"
-            className="w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"
+            className="w-full rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted"
           />
         )}
       </div>
@@ -217,14 +217,14 @@ export function AddGoalForm() {
       <div className="mt-4 flex gap-2">
         <button
           type="submit"
-          className="rounded-md bg-amber-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-amber-400"
+          className="rounded-row bg-accent px-4 py-2 text-sm font-medium text-on-accent hover:bg-accent-strong"
         >
           Add goal
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-md border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800"
+          className="rounded-row border border-line-strong px-4 py-2 text-sm text-ink-2 hover:bg-surface-2"
         >
           Cancel
         </button>

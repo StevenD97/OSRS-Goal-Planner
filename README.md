@@ -87,6 +87,28 @@ Scorching bow's Tormented Demons access) and those 27 are deliberately left
 as leaves rather than expanded further - see the comment at the top of
 `data/quests.ts` before extending this.
 
+## Design system
+
+Light-first, defined as CSS custom properties in `client/src/index.css` and
+wired into Tailwind v4 via `@theme` (so `bg-canvas`, `text-ink`,
+`border-line`, `rounded-panel`, etc. are real utility classes, not one-off
+hex values). Dark mode follows `prefers-color-scheme`, with `data-theme`
+overrides ready for a manual toggle if one gets added later.
+
+- **Type**: [Bricolage Grotesque](https://fonts.google.com/specimen/Bricolage+Grotesque)
+  for headings (`font-display`), [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans)
+  for body text (the default), [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono)
+  for stat numbers and counters (`font-mono tabular-nums`). Loaded from Google
+  Fonts in `client/index.html` - blocked by CSP inside the sandboxed artifact
+  preview (falls back to system fonts there), loads normally everywhere else.
+- **Color**: `canvas`/`surface`/`surface-2` for backgrounds, `ink`/`ink-2`/`muted`
+  for text, `line`/`line-strong` for borders, `accent` (+ `accent-soft`/
+  `accent-strong`/`on-accent`) as the brand color, `bronze` as a secondary
+  accent, and `melee`/`ranged`/`magic`/`shared` as semantic combat-style
+  colors used consistently on Gear Progression and Action Tracker badges.
+- **Radius**: a small deliberate scale - `rounded-chip` (3px, badges),
+  `rounded-row` (6px, buttons/inputs/list rows), `rounded-panel` (10px, cards).
+
 ## Static UI preview
 
 `npm run build:artifact --workspace=client` produces a single self-contained

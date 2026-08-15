@@ -11,7 +11,7 @@ export function Panel({
   return (
     <div
       className={clsx(
-        "rounded-lg border border-slate-800 bg-slate-900/60 p-4 shadow-sm",
+        "rounded-panel border border-line bg-surface p-4 shadow-[var(--hairline)]",
         className,
       )}
     >

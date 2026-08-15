@@ -41,7 +41,7 @@ export function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-100">
+        <h1 className="text-2xl font-semibold text-ink">
           Welcome
           {members.length === 1
             ? `, ${members[0].rsn}`
@@ -49,16 +49,16 @@ export function DashboardPage() {
               ? ` - tracking a group of ${members.length}`
               : ""}
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-muted">
           Your goal tracker, daily checklist, gear progression, and farm run guides in one place.
         </p>
       </div>
 
       {members.length === 0 && (
-        <Panel className="border-amber-800/50 bg-amber-500/5">
-          <p className="text-sm text-slate-300">
+        <Panel className="border-accent/40 bg-accent-soft">
+          <p className="text-sm text-ink-2">
             You haven't linked an account yet.{" "}
-            <Link to="/settings" className="text-amber-400 hover:underline">
+            <Link to="/settings" className="text-accent hover:underline">
               Link one (or your whole Group Ironman roster) in Settings
             </Link>{" "}
             to auto-track skills (Hiscores) and quests/diaries/CAs/collection log (WikiSync).
@@ -68,11 +68,11 @@ export function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <Link to="/goals">
-          <Panel className="h-full hover:border-amber-700/60">
-            <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
               Goals
             </h2>
-            <p className="mt-2 text-2xl font-semibold text-slate-100">
+            <p className="mt-2 font-mono text-2xl font-semibold tabular-nums text-ink">
               {completedGoals}/{goals.length}
             </p>
             <ProgressBar
@@ -83,11 +83,11 @@ export function DashboardPage() {
         </Link>
 
         <Link to="/dailies">
-          <Panel className="h-full hover:border-amber-700/60">
-            <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
               Dailies
             </h2>
-            <p className="mt-2 text-2xl font-semibold text-slate-100">
+            <p className="mt-2 font-mono text-2xl font-semibold tabular-nums text-ink">
               {doneDailies}/{allDailyTasks.length}
             </p>
             <ProgressBar
@@ -98,23 +98,23 @@ export function DashboardPage() {
         </Link>
 
         <Link to="/farm-runs">
-          <Panel className="h-full hover:border-amber-700/60">
-            <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
               Farm Runs
             </h2>
-            <p className="mt-2 text-2xl font-semibold text-slate-100">{FARM_RUNS.length} presets</p>
-            <p className="mt-3 text-xs text-slate-500">
+            <p className="mt-2 font-mono text-2xl font-semibold tabular-nums text-ink">{FARM_RUNS.length} presets</p>
+            <p className="mt-3 text-xs text-muted">
               Herb, tree, fruit tree, calquat, celastrus, hardwood, allotment &amp; flower
             </p>
           </Panel>
         </Link>
 
         <Link to="/gear">
-          <Panel className="h-full hover:border-amber-700/60">
-            <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
               Gear Progression
             </h2>
-            <p className="mt-2 text-2xl font-semibold text-slate-100">
+            <p className="mt-2 font-mono text-2xl font-semibold tabular-nums text-ink">
               {doneGear}/{allGearItems.length}
             </p>
             <ProgressBar
@@ -125,11 +125,11 @@ export function DashboardPage() {
         </Link>
 
         <Link to="/action-tracker">
-          <Panel className="h-full hover:border-amber-700/60">
-            <h2 className="text-sm font-semibold tracking-wide text-slate-400 uppercase">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
               Action Tracker
             </h2>
-            <p className="mt-2 text-2xl font-semibold text-slate-100">
+            <p className="mt-2 font-mono text-2xl font-semibold tabular-nums text-ink">
               {plans.length ? `${donePlanSteps}/${allPlanSteps.length}` : "0 plans"}
             </p>
             <ProgressBar

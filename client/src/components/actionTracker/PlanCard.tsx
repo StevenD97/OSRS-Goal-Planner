@@ -19,8 +19,8 @@ export function PlanCard({ plan }: { plan: ActionPlan }) {
     <Panel>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-slate-100">Goal: {plan.targetLabel}</h2>
-          <p className="mt-1 text-xs text-slate-500">
+          <h2 className="text-lg font-semibold text-ink">Goal: {plan.targetLabel}</h2>
+          <p className="mt-1 text-xs text-muted">
             {plan.steps.length} step{plan.steps.length === 1 ? "" : "s"} - added{" "}
             {new Date(plan.createdAt).toLocaleDateString()}
           </p>
@@ -28,13 +28,13 @@ export function PlanCard({ plan }: { plan: ActionPlan }) {
         <div className="flex items-center gap-3">
           <div className="flex min-w-[140px] items-center gap-2">
             <ProgressBar value={plan.steps.length ? (doneCount / plan.steps.length) * 100 : 0} />
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-muted">
               {doneCount}/{plan.steps.length}
             </span>
           </div>
           <button
             onClick={() => removePlan(plan.id)}
-            className="flex-none text-xs text-slate-500 hover:text-rose-400"
+            className="flex-none text-xs text-muted hover:text-danger"
           >
             Remove
           </button>

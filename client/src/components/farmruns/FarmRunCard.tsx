@@ -11,15 +11,15 @@ export function FarmRunCard({ run }: { run: FarmRunPreset }) {
 
   return (
     <Link to={`/farm-runs/${run.id}`}>
-      <Panel className="h-full transition-colors hover:border-amber-700/60">
+      <Panel className="h-full transition-colors hover:border-accent">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-slate-100">{run.name}</h3>
-          <span className="flex-none text-xs text-slate-500">{run.estimatedTime}</span>
+          <h3 className="font-semibold text-ink">{run.name}</h3>
+          <span className="flex-none font-mono text-xs tabular-nums text-muted">{run.estimatedTime}</span>
         </div>
-        <p className="mt-1 text-sm text-slate-400">{run.description}</p>
+        <p className="mt-1 text-sm text-muted">{run.description}</p>
         <div className="mt-3 flex items-center gap-2">
           <ProgressBar value={total ? (done / total) * 100 : 0} />
-          <span className="flex-none text-xs text-slate-500">
+          <span className="flex-none font-mono text-xs tabular-nums text-muted">
             {done}/{total}
           </span>
         </div>

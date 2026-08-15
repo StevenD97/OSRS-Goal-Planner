@@ -1,17 +1,142 @@
 @import "tailwindcss";
 
 :root {
+  --canvas: #f3f5f2;
+  --surface: #ffffff;
+  --surface-2: #eaeee8;
+  --line: #dde2d9;
+  --line-strong: #c6cdc1;
+  --ink: #14181a;
+  --ink-2: #3c4448;
+  --muted: #6b746e;
+  --accent: #1d6b57;
+  --accent-soft: #e2efe9;
+  --accent-strong: #134b3d;
+  --on-accent: #ffffff;
+  --bronze: #8a6320;
+  --bronze-soft: #f4ebd9;
+  --melee: #9a4529;
+  --ranged: #4a7526;
+  --magic: #2c5aa0;
+  --shared: #5a6570;
+  --danger: #b3261e;
+  --danger-soft: #fbeae8;
+  --hairline: 0 1px 0 rgba(20, 24, 26, 0.03);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0f1211;
+    --surface: #161a19;
+    --surface-2: #1d2321;
+    --line: #272e2b;
+    --line-strong: #3a4340;
+    --ink: #e8ede9;
+    --ink-2: #bac3bd;
+    --muted: #8a948d;
+    --accent: #4fbf9c;
+    --accent-soft: #16302a;
+    --accent-strong: #7fd8bc;
+    --on-accent: #0f1211;
+    --bronze: #c79b4b;
+    --bronze-soft: #2a2418;
+    --melee: #d2795c;
+    --ranged: #8fc060;
+    --magic: #7ba6e8;
+    --shared: #98a3ac;
+    --danger: #ff6b5c;
+    --danger-soft: #3a1f1c;
+    --hairline: 0 1px 0 rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --canvas: #0f1211;
+  --surface: #161a19;
+  --surface-2: #1d2321;
+  --line: #272e2b;
+  --line-strong: #3a4340;
+  --ink: #e8ede9;
+  --ink-2: #bac3bd;
+  --muted: #8a948d;
+  --accent: #4fbf9c;
+  --accent-soft: #16302a;
+  --accent-strong: #7fd8bc;
+  --on-accent: #0f1211;
+  --bronze: #c79b4b;
+  --bronze-soft: #2a2418;
+  --melee: #d2795c;
+  --ranged: #8fc060;
+  --magic: #7ba6e8;
+  --shared: #98a3ac;
+  --danger: #ff6b5c;
+  --danger-soft: #3a1f1c;
+  --hairline: 0 1px 0 rgba(0, 0, 0, 0.3);
   color-scheme: dark;
 }
 
+@theme {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-bronze: var(--bronze);
+  --color-bronze-soft: var(--bronze-soft);
+  --color-melee: var(--melee);
+  --color-ranged: var(--ranged);
+  --color-magic: var(--magic);
+  --color-shared: var(--shared);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-display: "Bricolage Grotesque", "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-chip: 3px;
+  --radius-row: 6px;
+  --radius-panel: 10px;
+}
+
 body {
-  @apply bg-slate-950 text-slate-100 antialiased;
+  @apply bg-canvas text-ink antialiased;
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent-strong);
 }
 
 ::selection {
-  @apply bg-amber-500/30;
+  background-color: var(--accent-soft);
 }
 
 .scrollbar-thin {
   scrollbar-width: thin;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }

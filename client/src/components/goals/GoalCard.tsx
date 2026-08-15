@@ -17,15 +17,15 @@ export function GoalCard({ goal }: { goal: Goal }) {
   return (
     <li
       className={clsx(
-        "flex items-start gap-3 rounded-lg border p-3",
-        status.completed ? "border-emerald-800 bg-emerald-500/5" : "border-slate-800 bg-slate-900/40",
+        "flex items-start gap-3 rounded-panel border p-3",
+        status.completed ? "border-accent/30 bg-accent-soft" : "border-line bg-surface-2",
       )}
     >
       <input
         type="checkbox"
         checked={goal.manualCompleted}
         onChange={(e) => setManualCompleted(goal.id, e.target.checked)}
-        className="mt-1 h-4 w-4 flex-none accent-amber-500"
+        className="mt-1 h-4 w-4 flex-none accent-accent"
         title="Manual override"
       />
       <div className="flex-1">
@@ -33,27 +33,27 @@ export function GoalCard({ goal }: { goal: Goal }) {
           <span
             className={clsx(
               "font-medium",
-              status.completed ? "text-emerald-400 line-through" : "text-slate-100",
+              status.completed ? "text-accent line-through" : "text-ink",
             )}
           >
             {goal.title}
           </span>
           <Badge tone="neutral">{GOAL_CATEGORY_LABELS[goal.category]}</Badge>
           {!status.synced && goal.source.type !== "manual" && (
-            <Badge tone="amber">not synced yet</Badge>
+            <Badge tone="bronze">not synced yet</Badge>
           )}
         </div>
-        {goal.notes && <p className="mt-0.5 text-xs text-slate-500">{goal.notes}</p>}
+        {goal.notes && <p className="mt-0.5 text-xs text-muted">{goal.notes}</p>}
         {status.caption && (
           <div className="mt-2 flex max-w-xs items-center gap-2">
             <ProgressBar value={status.progress} />
-            <span className="flex-none text-xs text-slate-500">{status.caption}</span>
+            <span className="flex-none font-mono text-xs tabular-nums text-muted">{status.caption}</span>
           </div>
         )}
       </div>
       <button
         onClick={() => removeGoal(goal.id)}
-        className="flex-none text-xs text-slate-500 hover:text-rose-400"
+        className="flex-none text-xs text-muted hover:text-danger"
       >
         Remove
       </button>

@@ -27,8 +27,8 @@ export function GearProgressionPage() {
     <div>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Gear Progression</h1>
-          <p className="mt-1 max-w-2xl text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-ink">Gear Progression</h1>
+          <p className="mt-1 max-w-2xl text-sm text-muted">
             An ironman-focused progression path from early game to best-in-slot, current as of
             mid-2026. Every item lists how an ironman actually gets it, since the GE isn't an
             option. Check items off as you obtain them.
@@ -36,7 +36,7 @@ export function GearProgressionPage() {
         </div>
         <div className="flex min-w-[200px] items-center gap-2">
           <ProgressBar value={allItems.length ? (totalDone / allItems.length) * 100 : 0} />
-          <span className="flex-none text-sm text-slate-400">
+          <span className="flex-none text-sm text-muted">
             {totalDone}/{allItems.length}
           </span>
         </div>
@@ -49,8 +49,8 @@ export function GearProgressionPage() {
             onClick={() => setTab(t.value)}
             className={`rounded-full px-3 py-1.5 text-sm font-medium ${
               tab === t.value
-                ? "bg-amber-500 text-slate-950"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                ? "bg-accent text-on-accent"
+                : "bg-surface-2 text-ink-2 hover:bg-line-strong"
             }`}
           >
             {t.label}
@@ -72,7 +72,7 @@ export function GearProgressionPage() {
         })}
       </div>
 
-      <p className="mt-6 text-xs text-slate-500">
+      <p className="mt-6 text-xs text-muted">
         Compiled from OSRS Wiki item/boss pages and current ironman progression guides. Late game
         is nonlinear - after core raid gear, prioritise whichever branch (
         {STYLE_LABELS.ranged}/{STYLE_LABELS.magic}/{STYLE_LABELS.melee}) matches the content you

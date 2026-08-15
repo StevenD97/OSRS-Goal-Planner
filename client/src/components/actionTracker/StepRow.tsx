@@ -38,36 +38,36 @@ export function StepRow({ step, index }: { step: PlanStep; index: number }) {
   return (
     <li
       className={clsx(
-        "flex items-start gap-3 rounded-md border px-3 py-2",
-        step.kind === "gearItem" && "border-amber-700/60 bg-amber-500/5",
-        complete && step.kind !== "gearItem" && "border-emerald-800 bg-emerald-500/5",
-        !complete && step.kind !== "gearItem" && "border-slate-800 bg-slate-900/40",
-        complete && step.kind === "gearItem" && "border-emerald-800 bg-emerald-500/10",
+        "flex items-start gap-3 rounded-row border px-3 py-2",
+        step.kind === "gearItem" && "border-accent bg-accent-soft",
+        complete && step.kind !== "gearItem" && "border-accent/30 bg-accent-soft",
+        !complete && step.kind !== "gearItem" && "border-line bg-surface-2",
+        complete && step.kind === "gearItem" && "border-accent/30 bg-accent-soft",
       )}
     >
-      <span className="mt-1 w-5 flex-none text-right text-xs font-mono text-slate-500">
+      <span className="mt-1 w-5 flex-none text-right text-xs font-mono text-muted">
         {index + 1}.
       </span>
       <input
         type="checkbox"
         checked={complete}
         onChange={handleToggle}
-        className="mt-1 h-4 w-4 flex-none accent-amber-500"
+        className="mt-1 h-4 w-4 flex-none accent-accent"
       />
       <div className="flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <span
             className={clsx(
               step.kind === "gearItem" ? "font-semibold" : "font-medium",
-              complete ? "text-emerald-400 line-through" : "text-slate-100",
+              complete ? "text-accent line-through" : "text-ink",
             )}
           >
             {stepLabel(step)}
           </span>
-          <Badge tone={step.kind === "gearItem" ? "amber" : "neutral"}>
+          <Badge tone={step.kind === "gearItem" ? "bronze" : "neutral"}>
             {KIND_LABEL[step.kind]}
           </Badge>
-          {autoTracked && <Badge tone="blue">auto-tracked</Badge>}
+          {autoTracked && <Badge tone="magic">auto-tracked</Badge>}
         </div>
       </div>
     </li>

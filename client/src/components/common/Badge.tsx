@@ -2,11 +2,14 @@ import type { ReactNode } from "react";
 import { clsx } from "clsx";
 
 const TONES = {
-  neutral: "bg-slate-800 text-slate-300",
-  amber: "bg-amber-500/10 text-amber-400",
-  green: "bg-emerald-500/10 text-emerald-400",
-  red: "bg-rose-500/10 text-rose-400",
-  blue: "bg-sky-500/10 text-sky-400",
+  neutral: "bg-surface-2 text-ink-2",
+  accent: "bg-accent-soft text-accent-strong",
+  bronze: "bg-bronze-soft text-bronze",
+  danger: "bg-danger-soft text-danger",
+  melee: "bg-melee/10 text-melee",
+  ranged: "bg-ranged/10 text-ranged",
+  magic: "bg-magic/10 text-magic",
+  shared: "bg-shared/10 text-shared",
 } as const;
 
 export function Badge({
@@ -19,7 +22,7 @@ export function Badge({
   return (
     <span
       className={clsx(
-        "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded-chip px-2 py-0.5 text-xs font-medium tracking-wide",
         TONES[tone],
       )}
     >

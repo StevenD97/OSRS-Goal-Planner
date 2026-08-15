@@ -19,13 +19,13 @@ export function MemberRow({
   onRemove: () => void;
 }) {
   return (
-    <li className="flex flex-wrap items-center gap-3 rounded-md border border-slate-800 bg-slate-900/40 px-3 py-2">
-      <span className="min-w-[120px] font-medium text-slate-100">{member.rsn}</span>
+    <li className="flex flex-wrap items-center gap-3 rounded-row border border-line bg-surface-2 px-3 py-2">
+      <span className="min-w-[120px] font-medium text-ink">{member.rsn}</span>
 
       <select
         value={member.mode}
         onChange={(e) => onModeChange(e.target.value as HiscoresMode)}
-        className="rounded-md border border-slate-700 bg-slate-900 px-2 py-1 text-xs text-slate-300"
+        className="rounded-row border border-line-strong bg-surface px-2 py-1 text-xs text-ink-2"
       >
         {MODE_OPTIONS.map((m) => (
           <option key={m.value} value={m.value}>
@@ -36,26 +36,26 @@ export function MemberRow({
 
       <div className="flex flex-1 flex-wrap items-center gap-2">
         {member.hiscores ? (
-          <Badge tone="green">
+          <Badge tone="accent">
             Lvl {member.hiscores.skills.find((s) => s.name === "Overall")?.level ?? "?"}
           </Badge>
         ) : member.hiscoresError ? (
-          <Badge tone="red">Hiscores: {member.hiscoresError}</Badge>
+          <Badge tone="danger">Hiscores: {member.hiscoresError}</Badge>
         ) : (
           <Badge tone="neutral">Not synced</Badge>
         )}
         {member.wikisync && !member.wikisync.unparsed ? (
-          <Badge tone="green">
+          <Badge tone="accent">
             WikiSync: {Object.values(member.wikisync.categories).flat().length} items
           </Badge>
         ) : member.wikisyncError ? (
-          <Badge tone="red">WikiSync: {member.wikisyncError}</Badge>
+          <Badge tone="danger">WikiSync: {member.wikisyncError}</Badge>
         ) : null}
       </div>
 
       <button
         onClick={onRemove}
-        className="flex-none text-xs text-slate-500 hover:text-rose-400"
+        className="flex-none text-xs text-muted hover:text-danger"
       >
         Remove
       </button>

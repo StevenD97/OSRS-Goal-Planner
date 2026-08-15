@@ -22,12 +22,12 @@ export function TierSection({
     <Panel>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-slate-100">{tier.name}</h2>
-          <p className="mt-1 max-w-2xl text-sm text-slate-400">{tier.description}</p>
+          <h2 className="text-lg font-semibold text-ink">{tier.name}</h2>
+          <p className="mt-1 max-w-2xl text-sm text-muted">{tier.description}</p>
         </div>
         <div className="flex min-w-[140px] flex-none items-center gap-2">
           <ProgressBar value={items.length ? (done / items.length) * 100 : 0} />
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-muted">
             {done}/{items.length}
           </span>
         </div>

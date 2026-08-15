@@ -5,14 +5,14 @@ export function FarmRunsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-100">Farm Runs</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-semibold text-ink">Farm Runs</h1>
+        <p className="mt-1 text-sm text-muted">
           Step-by-step preset checklists compiled from the{" "}
           <a
             href="https://oldschool.runescape.wiki/w/Farming_runs"
             target="_blank"
             rel="noreferrer"
-            className="text-amber-400 hover:underline"
+            className="text-accent hover:underline"
           >
             OSRS Wiki's Farming runs guide
           </a>
