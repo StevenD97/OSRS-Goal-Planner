@@ -36,6 +36,13 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   from [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) (the
   same community-run service behind the OSRS Wiki's "type your username" quest
   checklists), plus skill levels and boss KC from the official Hiscores.
+- **DPS Calculator** - standard OSRS accuracy-roll/max-hit combat formulas
+  (verified against the wiki's worked examples) for Melee/Ranged/Magic: set
+  levels, prayer, potion boost, stance, and a per-slot loadout to see max
+  hit, accuracy, DPS, and time to kill against a curated monster (or a
+  fully custom target). "Suggest loadout" auto-equips the best gear you
+  actually have, filtered against Gear Progression's obtained state. See
+  "DPS Calculator scope" below for what isn't modeled.
 
 ## Architecture
 
@@ -136,6 +143,30 @@ The Vite dev server proxies `/api/*` to the Express server (see
 of environment.
 
 ## Important caveats
+
+### DPS Calculator scope
+
+The formula engine (`client/src/lib/combatFormulas.ts`) implements the
+standard OSRS accuracy-roll/max-hit/DPS formulas exactly as documented on
+the wiki - verified against a worked example (Abyssal whip, 85% accuracy,
+max 30 → 5.31 DPS) and hand-checked against the calculator's own output
+(Piety + whip + 99s → 29 max hit, 83.7% accuracy, 5.06 DPS, all confirmed
+by manual calculation). What it deliberately does **not** model:
+
+- **Twisted bow**'s unique accuracy/damage scaling against the target's
+  Magic level - it's included with base stats only, so treat its numbers
+  as a floor, not the real output, against magic-heavy targets.
+- **Scythe of Vitur**'s 3-hit cleave and **Osmumten's fang**'s
+  reroll-low-rolls mechanic - both are modeled as a single ordinary hit.
+- Boss-specific mechanics (phases, prayer switches, special attacks).
+- The **equipment database** (`data/dpsEquipment.ts`, ~45 items) and
+  **monster database** (`data/monsters.ts`, ~18 targets) are curated
+  subsets with researched-but-approximate stats, not exhaustive or
+  independently verified against every value in the game's item/monster
+  database - especially monster defence *bonuses* (vs. defence *level*,
+  which is well-documented and reliable). Use "Custom target" and the
+  "Override with custom numbers" bonuses panel to plug in exact figures
+  from the wiki when precision matters.
 
 ### WikiSync only has data for opted-in accounts
 

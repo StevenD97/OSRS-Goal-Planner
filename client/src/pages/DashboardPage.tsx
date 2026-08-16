@@ -138,6 +138,18 @@ export function DashboardPage() {
             />
           </Panel>
         </Link>
+
+        <Link to="/dps-calc">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
+              DPS Calculator
+            </h2>
+            <p className="mt-2 text-2xl font-semibold text-ink">Compare loadouts</p>
+            <p className="mt-3 text-xs text-muted">
+              Max hit, accuracy, DPS &amp; time to kill by style - plus a loadout suggester
+            </p>
+          </Panel>
+        </Link>
       </div>
     </div>
   );
