@@ -31,6 +31,12 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   - Goals, gear-obtained state, Action Tracker steps - is satisfied if *any*
   linked member meets it, since gear and unlocks are effectively pooled on a
   real GIM team.
+- **Group Dashboard** - a two-tab view built for GIM teams: **Skills** is a
+  table of every skill (in the same order as the in-game skill panel) with
+  each linked member's level side by side, plus a "Group Max" column;
+  **Gear** is the full Gear Progression item list with a +/- counter per
+  item so the team can track exactly how many of each are currently owned
+  across the group, not just a per-person obtained checkbox.
 - **WikiSync integration** - link your RSN and the app pulls your live quest,
   achievement diary, combat achievement, and collection log completion status
   from [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) (the
@@ -142,8 +148,8 @@ it works from a `file://` URL or any static host without SPA-fallback
 config. Useful for sharing a click-through preview of the UI - Hiscores/
 WikiSync sync won't work in this mode since there's no backend to proxy
 through, but everything else (Goals, Dailies, Farm Runs, Gear Progression,
-Action Tracker, Settings roster management) runs entirely off localStorage
-and works normally.
+Action Tracker, Group Dashboard, Settings roster management) runs entirely
+off localStorage and works normally.
 
 ## Running it
 
@@ -244,6 +250,14 @@ model for "can our group get this," but it won't tell you *which* member
 still needs to personally do something (e.g. reach 74 Fletching to attach
 the Tormented synapse) - you'll need to track that division of labor
 yourselves.
+
+Gear Progression's obtained state (`useGearProgressionStore`) is actually a
+per-item **count** under the hood (`counts: Record<string, number>`), with
+the familiar obtained boolean derived as `count > 0` for the individual
+Gear Progression checklist, Action Tracker, and DPS Calculator "gear I own"
+filters. The Group Dashboard's Gear tab is the only place that exposes the
+raw count, via a +/- stepper - useful for "we have 2 blowpipes, need one
+more" tracking that a boolean can't represent.
 
 ### Being a good API citizen
 

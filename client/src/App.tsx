@@ -6,6 +6,7 @@ import { DailiesPage } from "./pages/DailiesPage";
 import { FarmRunsPage } from "./pages/FarmRunsPage";
 import { FarmRunDetailPage } from "./pages/FarmRunDetailPage";
 import { GearProgressionPage } from "./pages/GearProgressionPage";
+import { GroupDashboardPage } from "./pages/GroupDashboardPage";
 import { ActionTrackerPage } from "./pages/ActionTrackerPage";
 import { DpsCalculatorPage } from "./pages/DpsCalculatorPage";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/farm-runs" element={<FarmRunsPage />} />
         <Route path="/farm-runs/:runId" element={<FarmRunDetailPage />} />
         <Route path="/gear" element={<GearProgressionPage />} />
+        <Route path="/group" element={<GroupDashboardPage />} />
         <Route path="/action-tracker" element={<ActionTrackerPage />} />
         <Route path="/dps-calc" element={<DpsCalculatorPage />} />
         <Route path="/settings" element={<SettingsPage />} />

@@ -8,6 +8,7 @@ const LINKS = [
   { to: "/dailies", label: "Dailies" },
   { to: "/farm-runs", label: "Farm Runs" },
   { to: "/gear", label: "Gear" },
+  { to: "/group", label: "Group" },
   { to: "/action-tracker", label: "Action Tracker" },
   { to: "/dps-calc", label: "DPS Calc" },
   { to: "/settings", label: "Settings" },

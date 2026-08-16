@@ -66,7 +66,7 @@ export function DashboardPage() {
         </Panel>
       )}
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <Link to="/goals">
           <Panel className="h-full hover:border-accent">
             <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
@@ -147,6 +147,20 @@ export function DashboardPage() {
             <p className="mt-2 text-2xl font-semibold text-ink">Compare loadouts</p>
             <p className="mt-3 text-xs text-muted">
               Max hit, accuracy, DPS &amp; time to kill by style - plus a loadout suggester
+            </p>
+          </Panel>
+        </Link>
+
+        <Link to="/group">
+          <Panel className="h-full hover:border-accent">
+            <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">
+              Group Dashboard
+            </h2>
+            <p className="mt-2 font-mono text-2xl font-semibold tabular-nums text-ink">
+              {members.length || 0} member{members.length === 1 ? "" : "s"}
+            </p>
+            <p className="mt-3 text-xs text-muted">
+              Per-player skill levels &amp; shared gear counts, at a glance
             </p>
           </Panel>
         </Link>
