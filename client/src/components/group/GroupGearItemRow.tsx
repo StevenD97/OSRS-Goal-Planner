@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { clsx } from "clsx";
 import type { GearProgressionItem } from "../../types/gearProgression";
 import { SLOT_LABELS, STYLE_LABELS } from "../../types/gearProgression";
@@ -19,9 +20,12 @@ export function GroupGearItemRow({ item }: { item: GearProgressionItem }) {
     >
       <div className="flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className={clsx("font-medium", count > 0 ? "text-accent" : "text-ink")}>
+          <Link
+            to={`/gear/${item.id}`}
+            className={clsx("font-medium hover:underline", count > 0 ? "text-accent" : "text-ink")}
+          >
             {item.item}
-          </span>
+          </Link>
           <Badge tone="neutral">{SLOT_LABELS[item.slot]}</Badge>
           <Badge tone={item.style}>{STYLE_LABELS[item.style]}</Badge>
         </div>

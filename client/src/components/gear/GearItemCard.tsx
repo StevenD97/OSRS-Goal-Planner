@@ -28,14 +28,15 @@ export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgre
       />
       <div className="flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span
+          <Link
+            to={`/gear/${item.id}`}
             className={clsx(
-              "font-medium",
+              "font-medium hover:underline",
               obtained ? "text-accent line-through" : "text-ink",
             )}
           >
             {item.item}
-          </span>
+          </Link>
           <Badge tone="neutral">{SLOT_LABELS[item.slot]}</Badge>
           {showStyleBadge && (
             <Badge tone={item.style}>{STYLE_LABELS[item.style]}</Badge>

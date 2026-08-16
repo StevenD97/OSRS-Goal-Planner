@@ -18,10 +18,12 @@ const TABS: { value: TabValue; label: string }[] = [
 
 export function GearProgressionPage() {
   const [tab, setTab] = useState<TabValue>("all");
+  const [query, setQuery] = useState("");
   const obtained = useGearProgressionStore((s) => s.obtained);
 
   const allItems = useMemo(() => GEAR_PROGRESSION.flatMap((t) => t.items), []);
   const totalDone = allItems.filter((i) => obtained[i.id]).length;
+  const normalizedQuery = query.trim().toLowerCase();
 
   return (
     <div>
@@ -42,6 +44,16 @@ export function GearProgressionPage() {
         </div>
       </div>
 
+      <div className="mb-4">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for an item (e.g. Scorching bow, Occult necklace)..."
+          className="w-full max-w-md rounded-row border border-line-strong bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-accent focus:outline-none"
+        />
+      </div>
+
       <div className="mb-6 flex flex-wrap gap-2">
         {TABS.map((t) => (
           <button
@@ -60,12 +72,15 @@ export function GearProgressionPage() {
 
       <div className="space-y-4">
         {GEAR_PROGRESSION.map((tier) => {
-          const items =
+          const byStyle =
             tab === "all"
               ? tier.items
               : tab === "shared"
                 ? tier.items.filter((i) => i.style === "shared")
                 : tier.items.filter((i) => i.style === tab || i.style === "shared");
+          const items = normalizedQuery
+            ? byStyle.filter((i) => i.item.toLowerCase().includes(normalizedQuery))
+            : byStyle;
           return (
             <TierSection key={tier.id} tier={tier} items={items} showStyleBadge={tab === "all"} />
           );
