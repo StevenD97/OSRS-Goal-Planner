@@ -26,6 +26,13 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   plan ending in the item itself. Quest/skill steps auto-check themselves
   against synced Hiscores/WikiSync data; everything else is a manual
   checkbox. See "How the Action Tracker works" below.
+- **Item search & detail pages** - every Gear Progression item is searchable
+  and clickable through to `/gear/:itemId`, which shows the same recursively-
+  resolved acquisition plan as the Action Tracker, live, against whichever
+  account or Group Ironman roster is linked - without needing to commit to a
+  tracked plan first. Reachable from the Gear Progression page's search box,
+  or by clicking any item name anywhere it appears (including the Group
+  Dashboard's Gear tab).
 - **Group Ironman support** - link a whole GIM roster (paste names in bulk,
   or add one at a time) instead of a single account. Every requirement check
   - Goals, gear-obtained state, Action Tracker steps - is satisfied if *any*
@@ -245,14 +252,29 @@ run, celastrus's 8x potato cactus payment) was corroborated via research.
 
 ### Gear progression data currency
 
-`client/src/data/gearProgression.ts` was compiled via web research in mid-2026
-(OSRS Wiki item/boss pages + current ironman progression guides), not a live
-wiki fetch - this sandbox's network policy blocked direct access to most
-gear-guide sites, including the wiki itself. Core raid/GWD/DT2 content is
-well-established and stable; the newest tier ("Endgame" - Yama, Doom of
-Mokhaiotl) is flagged as worth double-checking in-game since it's the part
-most likely to drift as the game updates. OSRS gets new bosses/gear every
-few months, so this file will need periodic re-review regardless.
+`client/src/data/gearProgression.ts` and `client/src/data/quests.ts` were
+originally compiled from general/training knowledge rather than a live wiki
+fetch (this sandbox's network policy blocks `oldschool.runescape.wiki`
+directly), and a user-reported error on the Occult necklace - it was listed
+as craftable from Kraken drops, when it's actually an uncraftable Smoke
+devil drop - revealed that pass contained real, non-obvious mistakes, not
+just gaps. Every item and quest chain was then re-verified individually
+(August 2026) via targeted search-engine queries against wiki-sourced
+results (still no direct wiki fetch), which caught several more
+wrong-source-entirely errors of the same kind: Dragon scimitar (wrongly
+attributed to the Warriors' Guild instead of Daga on Ape Atoll), the
+Fremennik rings (wrongly gated behind a quest instead of being Dagannoth
+Kings drops), Desert Treasure II's prerequisite chain (had been copy-pasted
+from Desert Treasure I's), and both Theatre of Blood and Tombs of Amascut
+being entirely missing their entry-quest and wear-level requirements.
+
+This is meaningfully more reliable than the original pass, but still not
+verified against the primary source - a search-engine summary of the wiki
+is not the wiki. Treat the newest content (Yama, Doom of Mokhaiotl, A
+Kingdom Divided's Chasm of Fire) as the most likely to have drifted, since
+it's both the most recently added and the most sparsely documented in
+search results. If something looks off in-game, it's more likely a
+remaining data gap than a resolver bug - check the item/quest entry first.
 
 ### Group Ironman is modeled as a pooled resource, not simulated per-account
 

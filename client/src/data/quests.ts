@@ -13,12 +13,21 @@ export interface Quest {
 
 /**
  * Prerequisite chains for the quests referenced by gear in
- * data/gearProgression.ts, researched via the OSRS Wiki (mid-2026). This is
- * NOT a full graph of all ~200 OSRS quests - only chains relevant to gear
- * currently tracked here are mapped in depth. Quests mentioned as
- * prerequisites that don't have their own entry below are still added to a
- * generated plan as a required step, just without further expansion -
- * that's a deliberate scope boundary, not a bug (see README).
+ * data/gearProgression.ts. This is NOT a full graph of all ~200 OSRS
+ * quests - only chains relevant to gear currently tracked here are mapped
+ * in depth. Quests mentioned as prerequisites that don't have their own
+ * entry below are still added to a generated plan as a required step, just
+ * without further expansion - that's a deliberate scope boundary, not a
+ * bug (see README).
+ *
+ * Verified via targeted research (August 2026) after a user-reported error
+ * on the Occult necklace revealed the original data (compiled from
+ * general/training knowledge, not a live wiki fetch - this sandbox's
+ * network policy blocks the wiki directly) contained real mistakes, not
+ * just gaps. Every chain below was re-checked individually; anything not
+ * expanded further (a plain leaf entry) either has no mapped chain in
+ * scope, or its own chain wasn't needed to unblock the gear items that
+ * reference it.
  */
 export const QUESTS: Record<string, Quest> = {
   "cooks-assistant": {
@@ -58,7 +67,8 @@ export const QUESTS: Record<string, Quest> = {
       { type: "other", label: "Complete all 8 Recipe for Disaster subquests (freeing each NPC)" },
       { type: "other", label: "175 total Quest Points" },
     ],
-    notes: "Unlocks buying Barrows gloves. The final boss (Culinaromancer) can't be fought with Prayer active.",
+    notes:
+      "Unlocks buying Barrows gloves (130,000gp, 104,000gp with the Elite Lumbridge & Draynor Diary) from the Culinaromancer's Chest in the Lumbridge Castle cellar. The final boss (Culinaromancer) can't be fought with Prayer active.",
   },
   "eyes-of-glouphrie": { id: "eyes-of-glouphrie", name: "The Eyes of Glouphrie" },
   "enlightened-journey": { id: "enlightened-journey", name: "Enlightened Journey" },
@@ -84,6 +94,18 @@ export const QUESTS: Record<string, Quest> = {
       { type: "other", label: "Balloon Transport to Gnome Stronghold opened" },
     ],
     notes: "Unlocks Demonic Gorillas, the source of Zenyte shards.",
+  },
+  "dragon-slayer-1": {
+    id: "dragon-slayer-1",
+    name: "Dragon Slayer I",
+    notes:
+      "Has its own short prerequisite chain not mapped here - check the wiki. Required to wear a rune platebody and green d'hide body (among other mid-level dragonhide/rune-tier gear gates).",
+  },
+  "legends-quest": {
+    id: "legends-quest",
+    name: "Legends' Quest",
+    notes:
+      "Has its own substantial prerequisite chain (skills + several quests) not mapped here - check the wiki. Required to wield a Dragon square shield.",
   },
   "plague-city": { id: "plague-city", name: "Plague City" },
   biohazard: { id: "biohazard", name: "Biohazard" },
@@ -128,20 +150,22 @@ export const QUESTS: Record<string, Quest> = {
   "waterfall-quest": { id: "waterfall-quest", name: "Waterfall Quest" },
   "secrets-of-the-north": { id: "secrets-of-the-north", name: "Secrets of the North" },
   "making-friends-with-my-arm": { id: "making-friends-with-my-arm", name: "Making Friends with My Arm" },
+  "enakhras-lament": { id: "enakhras-lament", name: "Enakhra's Lament" },
+  "temple-of-the-eye": { id: "temple-of-the-eye", name: "Temple of the Eye" },
+  "the-garden-of-death": { id: "the-garden-of-death", name: "The Garden of Death" },
+  "his-faithful-servants": { id: "his-faithful-servants", name: "His Faithful Servants" },
   "desert-treasure-2": {
     id: "desert-treasure-2",
     name: "Desert Treasure II - The Fallen Empire",
     requires: [
       { type: "quest", questId: "desert-treasure-1" },
-      { type: "quest", questId: "the-dig-site" },
-      { type: "quest", questId: "temple-of-ikov" },
-      { type: "quest", questId: "the-tourist-trap" },
-      { type: "quest", questId: "troll-stronghold" },
-      { type: "quest", questId: "death-plateau" },
-      { type: "quest", questId: "priest-in-peril" },
-      { type: "quest", questId: "waterfall-quest" },
       { type: "quest", questId: "secrets-of-the-north" },
       { type: "quest", questId: "making-friends-with-my-arm" },
+      { type: "quest", questId: "enakhras-lament" },
+      { type: "quest", questId: "temple-of-the-eye" },
+      { type: "quest", questId: "the-garden-of-death" },
+      { type: "quest", questId: "below-ice-mountain" },
+      { type: "quest", questId: "his-faithful-servants" },
       { type: "skill", skill: "Firemaking", level: 75 },
       { type: "skill", skill: "Magic", level: 75 },
       { type: "skill", skill: "Thieving", level: 70 },
@@ -149,7 +173,8 @@ export const QUESTS: Record<string, Quest> = {
       { type: "skill", skill: "Runecraft", level: 60 },
       { type: "skill", skill: "Construction", level: 60 },
     ],
-    notes: "Unlocks Duke Sucellus, the Leviathan, Vardorvis, and the Whisperer - Virtus robes and the four DT2 rings.",
+    notes:
+      "Unlocks Duke Sucellus, the Leviathan, Vardorvis, and the Whisperer - Virtus robes and the four DT2 rings. Its own direct prerequisites are Desert Treasure I, Secrets of the North, Making Friends with My Arm, Enakhra's Lament, Temple of the Eye, The Garden of Death, Below Ice Mountain, and His Faithful Servants - not a copy of Desert Treasure I's chain (those quests are indirect, via Desert Treasure I itself, which is already listed).",
   },
   "heart-of-darkness": { id: "heart-of-darkness", name: "The Heart of Darkness" },
   "perilous-moons": { id: "perilous-moons", name: "Perilous Moons" },
@@ -163,7 +188,8 @@ export const QUESTS: Record<string, Quest> = {
       { type: "skill", skill: "Fletching", level: 52 },
       { type: "skill", skill: "Runecraft", level: 52 },
     ],
-    notes: "Final quest in the Twilight Emissaries series - unlocks Doom of Mokhaiotl.",
+    notes:
+      "Final quest in the Twilight Emissaries series (Children of the Sun -> Twilight's Promise -> The Heart of Darkness -> The Final Dawn) - unlocks Doom of Mokhaiotl.",
   },
   "while-guthix-sleeps": {
     id: "while-guthix-sleeps",
@@ -205,10 +231,13 @@ export const QUESTS: Record<string, Quest> = {
       { type: "skill", skill: "Hunter", level: 62 },
       { type: "skill", skill: "Defence", level: 40 },
       { type: "other", label: "180 total Quest Points" },
-      { type: "other", label: "Warriors' Guild entry (60 Attack + 60 Strength)" },
+      {
+        type: "other",
+        label: "Warriors' Guild entry (Attack + Strength combined 130 unboosted, or 99 in either)",
+      },
     ],
     notes:
-      "One of the most requirement-heavy quests in the game (27 prerequisite quests). Unlocks the Ancient Guthixian Temple and Tormented Demons. The 27 prerequisite quests below are added as individual steps but not expanded further - see README.",
+      "One of the most requirement-heavy quests in the game (28 prerequisite quests). Unlocks the Ancient Guthixian Temple and Tormented Demons. The 28 prerequisite quests below are added as individual steps but not expanded further - see README.",
   },
   "defender-of-varrock": { id: "defender-of-varrock", name: "Defender of Varrock" },
   "shield-of-arrav": { id: "shield-of-arrav", name: "Shield of Arrav" },
@@ -251,14 +280,67 @@ export const QUESTS: Record<string, Quest> = {
     ],
     notes: "Miniquest that unlocks Nex's Ancient Prison.",
   },
+  "client-of-kourend": { id: "client-of-kourend", name: "Client of Kourend" },
+  "x-marks-the-spot": { id: "x-marks-the-spot", name: "X Marks the Spot" },
+  "the-depths-of-despair": { id: "the-depths-of-despair", name: "The Depths of Despair" },
+  "the-queen-of-thieves": { id: "the-queen-of-thieves", name: "The Queen of Thieves" },
+  "the-ascent-of-arceuus": { id: "the-ascent-of-arceuus", name: "The Ascent of Arceuus" },
+  "the-forsaken-tower": { id: "the-forsaken-tower", name: "The Forsaken Tower" },
+  "tale-of-the-righteous": { id: "tale-of-the-righteous", name: "Tale of the Righteous" },
+  "architectural-alliance": { id: "architectural-alliance", name: "Architectural Alliance" },
   "a-kingdom-divided": {
     id: "a-kingdom-divided",
     name: "A Kingdom Divided",
-    notes: "Unlocks the Chasm of Fire and, afterward, Yama.",
+    requires: [
+      { type: "quest", questId: "client-of-kourend" },
+      { type: "quest", questId: "x-marks-the-spot" },
+      { type: "quest", questId: "the-depths-of-despair" },
+      { type: "quest", questId: "the-queen-of-thieves" },
+      { type: "quest", questId: "the-ascent-of-arceuus" },
+      { type: "quest", questId: "the-forsaken-tower" },
+      { type: "quest", questId: "tale-of-the-righteous" },
+      { type: "quest", questId: "architectural-alliance" },
+      { type: "skill", skill: "Agility", level: 54 },
+      { type: "skill", skill: "Thieving", level: 52 },
+      { type: "skill", skill: "Woodcutting", level: 52 },
+      { type: "skill", skill: "Herblore", level: 50 },
+      { type: "skill", skill: "Mining", level: 42 },
+      { type: "skill", skill: "Crafting", level: 38 },
+      { type: "skill", skill: "Magic", level: 35 },
+    ],
+    notes:
+      "Part of the Kourend & Kebos storyline. Unlocks the Chasm of Fire and, afterward, Yama.",
   },
   "children-of-the-sun": {
     id: "children-of-the-sun",
     name: "Children of the Sun",
-    notes: "Opening quest of the Varlamore storyline - unlocks Civitas illa Fortis and the Royal Titans.",
+    notes:
+      "Opening quest of the Twilight Emissaries (Varlamore) storyline, with no prerequisites of its own - unlocks Civitas illa Fortis and the Royal Titans.",
+  },
+  "in-search-of-the-myreque": { id: "in-search-of-the-myreque", name: "In Search of the Myreque" },
+  "in-aid-of-the-myreque": { id: "in-aid-of-the-myreque", name: "In Aid of the Myreque" },
+  "the-restless-ghost": { id: "the-restless-ghost", name: "The Restless Ghost" },
+  "nature-spirit": { id: "nature-spirit", name: "Nature Spirit" },
+  "darkness-of-hallowvale": { id: "darkness-of-hallowvale", name: "Darkness of Hallowvale" },
+  "a-taste-of-hope": { id: "a-taste-of-hope", name: "A Taste of Hope" },
+  "a-night-at-the-theatre": {
+    id: "a-night-at-the-theatre",
+    name: "A Night at the Theatre",
+    requires: [
+      { type: "quest", questId: "priest-in-peril" },
+      { type: "quest", questId: "in-search-of-the-myreque" },
+      { type: "quest", questId: "in-aid-of-the-myreque" },
+      { type: "quest", questId: "the-restless-ghost" },
+      { type: "quest", questId: "nature-spirit" },
+      { type: "quest", questId: "darkness-of-hallowvale" },
+      { type: "quest", questId: "a-taste-of-hope" },
+    ],
+    notes: "Required to enter Theatre of Blood at all, on any mode.",
+  },
+  "beneath-cursed-sands": {
+    id: "beneath-cursed-sands",
+    name: "Beneath Cursed Sands",
+    notes:
+      "4th quest in the Desert quest series - has its own prerequisite chain not mapped here. Required to unlock Tombs of Amascut.",
   },
 };
