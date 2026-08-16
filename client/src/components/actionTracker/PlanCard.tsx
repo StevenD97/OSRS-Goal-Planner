@@ -6,14 +6,17 @@ import { useAccountStore } from "../../state/useAccountStore";
 import { useGearProgressionStore } from "../../state/useGearProgressionStore";
 import { useActionTrackerStore } from "../../state/useActionTrackerStore";
 import { isStepComplete } from "../../lib/actionPlan";
+import { GEAR_PROGRESSION_BY_ID } from "../../data/gearProgression";
 
 export function PlanCard({ plan }: { plan: ActionPlan }) {
   const members = useAccountStore((s) => s.members);
   const gearObtained = useGearProgressionStore((s) => s.obtained);
   const checked = useActionTrackerStore((s) => s.checked);
   const removePlan = useActionTrackerStore((s) => s.removePlan);
+  const addPlan = useActionTrackerStore((s) => s.addPlan);
 
   const doneCount = plan.steps.filter((s) => isStepComplete(s, members, gearObtained, checked)).length;
+  const gearItem = GEAR_PROGRESSION_BY_ID[plan.targetGearItemId];
 
   return (
     <Panel>
@@ -32,6 +35,15 @@ export function PlanCard({ plan }: { plan: ActionPlan }) {
               {doneCount}/{plan.steps.length}
             </span>
           </div>
+          {gearItem && (
+            <button
+              onClick={() => addPlan(gearItem)}
+              className="flex-none text-xs text-muted hover:text-accent"
+              title="Re-expand this plan's steps against the latest requirement data"
+            >
+              Refresh
+            </button>
+          )}
           <button
             onClick={() => removePlan(plan.id)}
             className="flex-none text-xs text-muted hover:text-danger"

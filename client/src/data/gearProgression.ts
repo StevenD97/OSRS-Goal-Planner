@@ -28,6 +28,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Rune scim from Smithing/drops; Dragon scimitar from Warriors' Guild armoury (defender tokens) or monster drops",
         requirements: "60 Attack for dragon weapons",
+        requires: [{ type: "skill", skill: "Attack", level: 60 }],
       },
       {
         id: "eg-melee-armor",
@@ -36,6 +37,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Smithing (Blast Furnace) or monster drops",
         requirements: "40 Defence, 99 Smithing to self-smith (or buy from other iron income)",
+        requires: [{ type: "skill", skill: "Defence", level: 40 }],
       },
       {
         id: "eg-melee-shield",
@@ -43,6 +45,8 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Dragon square shield",
         style: "melee",
         source: "Monster drops (Lesser demons etc.) or Legends' Quest area monsters",
+        requirements: "60 Defence to wield",
+        requires: [{ type: "skill", skill: "Defence", level: 60 }],
       },
       {
         id: "eg-ranged-weapon",
@@ -65,6 +69,8 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Iban's staff / Slayer's staff",
         style: "magic",
         source: "Quest reward (Underground Pass / Curse of the Empty Lord for Iban's, Nightmare Zone points for Slayer's staff)",
+        requires: [{ type: "quest", questId: "underground-pass" }],
+        notes: "Underground Pass covers Iban's staff specifically; Slayer's staff instead needs Nightmare Zone reward points.",
       },
       {
         id: "eg-magic-armor",
@@ -105,6 +111,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Barbarian Assault - high-level Fighter/Collector gambles",
         requirements: "Barbarian Assault minigame progress",
+        requires: [{ type: "other", label: "Reach a high-level Fighter or Collector gamble in Barbarian Assault" }],
       },
       {
         id: "fg-defender",
@@ -113,6 +120,10 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "Warriors' Guild - exchange defender tokens",
         requirements: "60 Attack, 60 Strength for Warriors' Guild access",
+        requires: [
+          { type: "skill", skill: "Attack", level: 60 },
+          { type: "skill", skill: "Strength", level: 60 },
+        ],
       },
       {
         id: "fg-cape-melee",
@@ -129,6 +140,10 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "shared",
         source: "Fremennik quest line rings, imbued with Nightmare Zone reward points",
         requirements: "Fremennik Trials + Nightmare Zone points for imbue",
+        requires: [
+          { type: "quest", questId: "fremennik-trials" },
+          { type: "other", label: "Earn enough Nightmare Zone reward points to imbue the ring" },
+        ],
       },
       {
         id: "fg-ranged-armor",
@@ -145,6 +160,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "magic",
         source: "Kraken (87 Slayer) drop, or crafted from Kraken tentacle + Dark essence + Chaos rune (rare Kraken drop)",
         requirements: "87 Slayer for Kraken",
+        requires: [{ type: "skill", skill: "Slayer", level: 87 }],
       },
     ],
   },
@@ -161,8 +177,12 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Toxic blowpipe",
         style: "ranged",
         source: "Zulrah - assembled from Tanzanite fang + Toxic blowpipe(uncharged) drops",
-        requirements: "75 Ranged; solid ranged/magic gear to solo Zulrah",
+        requirements: "75 Ranged; Regicide for Zul-Andra access; solid ranged/magic gear to solo Zulrah",
         notes: "Usually the single biggest ranged power spike on an ironman account.",
+        requires: [
+          { type: "quest", questId: "regicide" },
+          { type: "skill", skill: "Ranged", level: 75 },
+        ],
       },
       {
         id: "prps-magic-weapon",
@@ -171,6 +191,10 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "magic",
         source: "Kraken drop (Seas), or upgraded with Kraken tentacles (Swamp) - required for efficient Barrows/Zulrah/most raids",
         requirements: "87 Slayer for Kraken, 75 Magic to wield",
+        requires: [
+          { type: "skill", skill: "Slayer", level: 87 },
+          { type: "skill", skill: "Magic", level: 75 },
+        ],
       },
       {
         id: "prps-jewelry",
@@ -235,6 +259,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "General Graardor (God Wars Dungeon)",
         requirements: "70 Defence to access GWD; a full team or strong solo setup for Graardor",
+        requires: [{ type: "skill", skill: "Defence", level: 70 }],
       },
       {
         id: "prb-armadyl",
@@ -242,6 +267,8 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         item: "Armadyl armour (chestplate + chainskirt)",
         style: "ranged",
         source: "Kree'arra (God Wars Dungeon)",
+        requirements: "70 Defence to access GWD",
+        requires: [{ type: "skill", skill: "Defence", level: 70 }],
       },
       {
         id: "prb-moons",
@@ -258,6 +285,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "shared",
         source: "Royal Titans (Varlamore)",
         notes: "More of a resource/GP boss for ironmen than a gear boss, but worth farming pre-raids.",
+        requires: [{ type: "quest", questId: "children-of-the-sun" }],
       },
       {
         id: "prb-magic-armor",
@@ -576,6 +604,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
         style: "melee",
         source: "The Inferno (TzHaar solo minigame, harder successor to the Fight Caves)",
         notes: "BIS melee cape; a true solo skill-check more than a gear check.",
+        requires: [{ type: "other", label: "Complete the Fight Caves for a Fire cape first (required to enter the Inferno)" }],
       },
       {
         id: "eg2-yama-armor",
@@ -611,3 +640,7 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
     ],
   },
 ];
+
+export const GEAR_PROGRESSION_BY_ID = Object.fromEntries(
+  GEAR_PROGRESSION.flatMap((tier) => tier.items).map((item) => [item.id, item]),
+);

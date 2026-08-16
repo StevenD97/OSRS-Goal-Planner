@@ -24,14 +24,25 @@ export const useActionTrackerStore = create<ActionTrackerState>()(
 
       addPlan: (item) => {
         const existing = get().plans.find((p) => p.targetGearItemId === item.id);
-        if (existing) return existing.id;
+        // Always re-resolve steps, even for an existing plan: gear/quest data can gain
+        // more detail after a plan was first created, and step ids are deterministic
+        // (quest:<id>, skill:<name>, gearItem:<id>, other:<slug>) so refreshing never
+        // loses completion state - that's computed live or keyed by those stable ids.
+        const steps = resolveActionPlan(item);
+
+        if (existing) {
+          set((state) => ({
+            plans: state.plans.map((p) => (p.id === existing.id ? { ...p, steps } : p)),
+          }));
+          return existing.id;
+        }
 
         const plan: ActionPlan = {
           id: crypto.randomUUID(),
           targetLabel: item.item,
           targetGearItemId: item.id,
           createdAt: Date.now(),
-          steps: resolveActionPlan(item),
+          steps,
         };
         set((state) => ({ plans: [plan, ...state.plans] }));
         return plan.id;

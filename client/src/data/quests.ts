@@ -256,4 +256,9 @@ export const QUESTS: Record<string, Quest> = {
     name: "A Kingdom Divided",
     notes: "Unlocks the Chasm of Fire and, afterward, Yama.",
   },
+  "children-of-the-sun": {
+    id: "children-of-the-sun",
+    name: "Children of the Sun",
+    notes: "Opening quest of the Varlamore storyline - unlocks Civitas illa Fortis and the Royal Titans.",
+  },
 };

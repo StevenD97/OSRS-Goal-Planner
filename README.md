@@ -94,6 +94,23 @@ Scorching bow's Tormented Demons access) and those 27 are deliberately left
 as leaves rather than expanded further - see the comment at the top of
 `data/quests.ts` before extending this.
 
+**Requirements coverage**: 32 of the ~57 items in `data/gearProgression.ts`
+have a structured `requires` array as of this writing; the rest (mostly raid
+drops from CoX/ToB/ToA, which genuinely have no quest/skill gate beyond
+"survive the raid") intentionally have none, so "Aim for this next" on those
+correctly produces a single-step plan. If an item that *should* expand
+doesn't, it's very likely missing `requires` data rather than a resolver bug
+- check the item in `gearProgression.ts` first.
+
+**Plans refresh on demand, not automatically**: a plan's `steps` are
+snapshotted at creation time and won't pick up later `requires` data changes
+on their own. Clicking "Aim for this next" / "In tracker" again on the same
+item, or the "Refresh" button on the plan card in the Action Tracker, always
+re-resolves the plan against current data (`useActionTrackerStore.addPlan`
+is idempotent-but-refreshing: same plan id, freshly resolved steps). This
+matters most right after pulling an update that adds more `requires`
+coverage to an item you already have a plan for.
+
 ## Design system
 
 Light-first, defined as CSS custom properties in `client/src/index.css` and

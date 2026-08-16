@@ -51,7 +51,9 @@ export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgre
         (hasPlan ? (
           <Link
             to="/action-tracker"
+            onClick={() => addPlan(item)}
             className="flex-none self-start rounded-row border border-accent px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent-soft"
+            title="Refreshes the plan's steps against the latest requirement data before opening it"
           >
             In tracker &rarr;
           </Link>
