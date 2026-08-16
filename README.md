@@ -138,6 +138,13 @@ overrides ready for a manual toggle if one gets added later.
   colors used consistently on Gear Progression and Action Tracker badges.
 - **Radius**: a small deliberate scale - `rounded-chip` (3px, badges),
   `rounded-row` (6px, buttons/inputs/list rows), `rounded-panel` (10px, cards).
+- **Navigation**: a persistent left sidebar (`components/layout/Sidebar.tsx`)
+  rather than a top bar, styled as a textured beige/parchment panel distinct
+  from the main canvas - a warm cream with a subtle SVG-noise grain in light
+  mode, a dark aged-leather brown (same grain, inverted to white) in dark
+  mode. Tokens (`--sidebar-bg`, `--sidebar-ink`, `--sidebar-active`, etc.) and
+  the `.sidebar-texture` utility live in `index.css` alongside the rest of
+  the design system.
 
 ## Static UI preview
 

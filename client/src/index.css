@@ -23,6 +23,14 @@
   --danger-soft: #fbeae8;
   --hairline: 0 1px 0 rgba(20, 24, 26, 0.03);
   color-scheme: light;
+
+  --sidebar-bg: #e9dfc7;
+  --sidebar-border: #d5c6a0;
+  --sidebar-ink: #2b2415;
+  --sidebar-ink-muted: #7d6f4e;
+  --sidebar-active: #dbe6d9;
+  --sidebar-active-ink: #134b3d;
+  --sidebar-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,10 +57,25 @@
     --danger-soft: #3a1f1c;
     --hairline: 0 1px 0 rgba(0, 0, 0, 0.3);
     color-scheme: dark;
+
+    --sidebar-bg: #221d15;
+    --sidebar-border: #382f1e;
+    --sidebar-ink: #ece1c8;
+    --sidebar-ink-muted: #9c8d6c;
+    --sidebar-active: #24352c;
+    --sidebar-active-ink: #7fd8bc;
+    --sidebar-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
 
 :root[data-theme="dark"] {
+  --sidebar-bg: #221d15;
+  --sidebar-border: #382f1e;
+  --sidebar-ink: #ece1c8;
+  --sidebar-ink-muted: #9c8d6c;
+  --sidebar-active: #24352c;
+  --sidebar-active-ink: #7fd8bc;
+  --sidebar-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --canvas: #0f1211;
   --surface: #161a19;
   --surface-2: #1d2321;
@@ -99,6 +122,13 @@
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
 
+  --color-sidebar: var(--sidebar-bg);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ink: var(--sidebar-ink);
+  --color-sidebar-ink-muted: var(--sidebar-ink-muted);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-active-ink: var(--sidebar-active-ink);
+
   --font-display: "Bricolage Grotesque", "Archivo", "Helvetica Neue", Arial, sans-serif;
   --font-sans: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -139,4 +169,10 @@ a:hover {
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+.sidebar-texture {
+  background-color: var(--sidebar-bg);
+  background-image: var(--sidebar-noise);
+  background-repeat: repeat;
 }
