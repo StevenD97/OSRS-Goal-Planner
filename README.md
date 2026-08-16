@@ -129,8 +129,16 @@ overrides ready for a manual toggle if one gets added later.
   for headings (`font-display`), [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans)
   for body text (the default), [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono)
   for stat numbers and counters (`font-mono tabular-nums`). Loaded from Google
-  Fonts in `client/index.html` - blocked by CSP inside the sandboxed artifact
-  preview (falls back to system fonts there), loads normally everywhere else.
+  Fonts via `<link>` in `client/index.html` for the normal app. The artifact
+  build (`npm run build:artifact`) swaps that `<link>` for the same fonts
+  self-hosted as base64 `data:` URIs (`vite.artifact.config.ts`'s `inlineFonts`
+  plugin, reading `client/src/styles/embedded-fonts.css`) instead, since the
+  artifact sandbox's CSP blocks the external stylesheet - regenerate that file
+  with `node scripts/fetch-embedded-fonts.mjs` if the font stack ever changes.
+- **Elevation**: cards (`Panel`) use a real two-layer soft shadow
+  (`--shadow-panel` / `--shadow-panel-hover` on hover) rather than a flat
+  border alone, tuned separately per theme since dark surfaces need more
+  shadow opacity to read.
 - **Color**: `canvas`/`surface`/`surface-2` for backgrounds, `ink`/`ink-2`/`muted`
   for text, `line`/`line-strong` for borders, `accent` (+ `accent-soft`/
   `accent-strong`/`on-accent`) as the brand color, `bronze` as a secondary
