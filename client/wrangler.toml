@@ -21,6 +21,4 @@ binding = "ASSETS"
 [[d1_databases]]
 binding = "DB"
 database_name = "osrs-goal-planner-sync"
-# Replace with the real ID printed by:
-#   npx wrangler d1 create osrs-goal-planner-sync
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "21f80c92-8665-40c0-85c0-7eead4a76285"
