@@ -249,10 +249,17 @@ provision cloud resources on your behalf.
        build needs - `package.json`, `wrangler.toml`, `functions/` - lives
        there)
      - **Build command**: `npm install && npm run build`
-     - **Deploy command**: leave the default, `npx wrangler deploy` - this
-       reads `pages_build_output_dir` and the D1 binding straight from
-       `wrangler.toml`, so no separate dashboard binding step is needed as
-       long as the real `database_id` is in that file (step 1 above).
+     - **Deploy command**: **change the dashboard's default** from
+       `npx wrangler deploy` to `npx wrangler pages deploy dist` - the
+       default is for plain Workers and fails with "Missing entry-point to
+       Worker script" on a Pages-with-Functions project like this one (its
+       own error message says as much: "you have run `wrangler deploy` on
+       a Pages project, `wrangler pages deploy` should be used instead").
+       `wrangler pages deploy` reads the D1 binding straight from
+       `wrangler.toml`, so no separate dashboard binding step should be
+       needed as long as the real `database_id` is in that file (step 1
+       above) - but if Cloud Sync doesn't work after deploying, double
+       check Settings -> Functions -> D1 database bindings too.
      Every push to the branch you selected as "Production branch" redeploys
      automatically.
    - **CLI (one-off, or if you'd rather not connect GitHub)**:

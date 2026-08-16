@@ -1,10 +1,13 @@
 # Cloudflare Pages project config - see README's "Deploying for free on
 # Cloudflare" section for the full setup walkthrough.
 #
-# pages_build_output_dir is what makes Cloudflare's dashboard Git integration
-# (and `wrangler deploy`) treat this as a Pages project - a dashboard-created
-# Pages project defaults its "Deploy command" to `npx wrangler deploy`, which
-# only serves static assets + functions/ correctly once this is set. Local
+# IMPORTANT: the dashboard's Git integration defaults "Deploy command" to
+# `npx wrangler deploy`, which is for plain Workers and fails with "Missing
+# entry-point to Worker script" here - override it to
+# `npx wrangler pages deploy dist` (Wrangler's own error message says as
+# much). pages_build_output_dir below matters for local tooling
+# (`wrangler pages dev`) and as a hint for wrangler's Pages-vs-Worker
+# detection, but doesn't make `wrangler deploy` itself work. Local
 # `wrangler pages dev -- npm:dev` proxy mode can't be combined with this
 # field (hence "pages:dev" in package.json builds first and runs
 # `wrangler pages dev dist` instead - see the README's local-testing note).
