@@ -74,14 +74,15 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
 ## Architecture
 
 ```
-client/            React + TypeScript + Vite + Tailwind v4 SPA (zustand +
-                    localStorage for all state, optionally mirrored to the
-                    cloud - see "Cloud Sync" below)
-client/functions/  Cloudflare Pages Functions - the real, deployed backend:
-                    Hiscores/WikiSync proxy + Cloud Sync's D1-backed API
-server/            Express + TypeScript - local-dev-only mirror of the same
-                    two proxy routes plus an in-memory Cloud Sync endpoint,
-                    so `npm run dev` doesn't require Wrangler day-to-day
+client/          React + TypeScript + Vite + Tailwind v4 SPA (zustand +
+                  localStorage for all state, optionally mirrored to the
+                  cloud - see "Cloud Sync" below)
+client/worker/   Cloudflare Worker - the real, deployed backend: serves the
+                  built SPA (via an [assets] binding) and handles the
+                  Hiscores/WikiSync proxy + Cloud Sync's D1-backed API
+server/          Express + TypeScript - local-dev-only mirror of the same
+                  two proxy routes plus an in-memory Cloud Sync endpoint,
+                  so `npm run dev` doesn't require Wrangler day-to-day
 ```
 
 The proxy routes exist because neither the official Hiscores nor WikiSync
@@ -222,12 +223,22 @@ to use if Cloud Sync and live Hiscores/WikiSync matter to you.
 
 The whole app - static frontend, the Hiscores/WikiSync proxy, and Cloud
 Sync's storage - runs on Cloudflare's free tier indefinitely at personal/
-small-group scale: Pages for static hosting (unlimited sites, no sleep),
-Pages Functions for the API (same generous free request allowance as
-Workers), and D1 for the sync database (5 GB free, no pause-after-inactivity
-the way some other free database tiers have). None of this requires a
-credit card. You'll need your own free Cloudflare account - this repo can't
-provision cloud resources on your behalf.
+small-group scale: a single Worker serves both the static build (via an
+`[assets]` binding, same generous free request allowance either way) and
+the API routes, backed by D1 for the sync database (5 GB free, no
+pause-after-inactivity the way some other free database tiers have). None
+of this requires a credit card. You'll need your own free Cloudflare
+account - this repo can't provision cloud resources on your behalf.
+
+This deploys as a **Worker**, not a classic **Pages project**, on purpose:
+Cloudflare's dashboard Git integration auto-injects a `CLOUDFLARE_API_TOKEN`
+for the build/deploy commands that has Workers permissions but not Pages
+ones - `wrangler pages deploy` fails there with an opaque "Authentication
+error [code: 10000]" even for an account Super Admin, discovered the hard
+way while setting this up. Plain `wrangler deploy` against a Worker (what
+this repo is now structured as, via `wrangler.toml`'s `main` + `[assets]`)
+works fine with that same token, so that's the path of least resistance,
+not just a style preference.
 
 1. **Create a D1 database.** From `client/`:
    ```bash
@@ -235,58 +246,47 @@ provision cloud resources on your behalf.
    npx wrangler d1 create osrs-goal-planner-sync
    ```
    This prints a `database_id` - paste it into `client/wrangler.toml`,
-   replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`.
+   replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`. (The D1 dashboard's own
+   Console tab can create the database and run `schema.sql` too, if you'd
+   rather not touch the CLI for this step - either way you still need the
+   printed/shown database ID for `wrangler.toml`.)
 2. **Apply the schema:**
    ```bash
    npm run db:migrate --workspace=client
    ```
 3. **Deploy.** Either:
    - **Dashboard (recommended, auto-deploys on every push)**: Workers &amp;
-     Pages -> Create -> Pages -> Connect to Git -> pick this repo. Cloudflare's
-     current dashboard uses a unified build flow (not the older separate
-     "build output directory" field) - set:
+     Pages -> Create -> pick this repo via Connect to Git. Set:
      - **Root directory**: `client` (this is a monorepo; everything the
-       build needs - `package.json`, `wrangler.toml`, `functions/` - lives
+       build needs - `package.json`, `wrangler.toml`, `worker/` - lives
        there)
      - **Build command**: `npm install && npm run build`
-     - **Deploy command**: **change the dashboard's default** from
-       `npx wrangler deploy` to `npx wrangler pages deploy dist` - the
-       default is for plain Workers and fails with "Missing entry-point to
-       Worker script" on a Pages-with-Functions project like this one (its
-       own error message says as much: "you have run `wrangler deploy` on
-       a Pages project, `wrangler pages deploy` should be used instead").
-       `wrangler pages deploy` reads the D1 binding straight from
-       `wrangler.toml`, so no separate dashboard binding step should be
-       needed as long as the real `database_id` is in that file (step 1
-       above) - but if Cloud Sync doesn't work after deploying, double
-       check Settings -> Functions -> D1 database bindings too.
+     - **Deploy command**: `npx wrangler deploy` (this is the dashboard's
+       default - no override needed for a Worker, unlike the Pages-project
+       flow this repo used to use)
      Every push to the branch you selected as "Production branch" redeploys
      automatically.
    - **CLI (one-off, or if you'd rather not connect GitHub)**:
      ```bash
-     npm run pages:deploy --workspace=client
+     npm run deploy --workspace=client
      ```
-     (First run will prompt to create the Pages project; the D1 binding is
-     read from `wrangler.toml` automatically either way.)
-4. **Fill in `OUTBOUND_USER_AGENT`** in `client/functions/_shared/config.ts`
-   with real contact info before relying on this for real traffic - see
-   "Being a good API citizen" below.
+4. **Fill in `OUTBOUND_USER_AGENT`** in `client/worker/lib/config.ts` with
+   real contact info before relying on this for real traffic - see "Being a
+   good API citizen" below.
 
-**Local testing of the real (D1-backed) Functions**, as opposed to the
-Express dev-mirror: `npm run pages:dev --workspace=client` builds first,
-then runs Wrangler directly against the built output (`wrangler pages dev
--- npm:dev` proxy mode was unreliable in testing - serving the built `dist/`
-directly is solid, and it's what `pages_build_output_dir` in `wrangler.toml`
-now also uses for the real dashboard deploy, so this is the closest local
-equivalent to production). First time only, apply the schema locally too:
+**Local testing of the real (D1-backed) Worker**, as opposed to the Express
+dev-mirror: `npm run worker:dev --workspace=client` builds first, then runs
+Wrangler directly against the built output - this is the closest local
+equivalent to production, same binding setup and everything. First time
+only, apply the schema locally too:
 ```bash
 npm run db:migrate:local --workspace=client
-npm run pages:dev --workspace=client
+npm run worker:dev --workspace=client
 ```
 
 ## Cloud Sync
 
-`useSyncStore` (client) + `functions/api/sync/[code].ts` (server) implement
+`useSyncStore` (client) + `worker/index.ts`'s sync routes (server) implement
 the whole feature: a "sync code" is a random 12-character string generated
 client-side (`lib/cloudSync.ts`'s `generateSyncCode`, ~60 bits of entropy -
 not brute-forceable), used as the primary key of a single D1 table
@@ -447,7 +447,7 @@ WikiSync is free, unauthenticated, and run by a small volunteer team (Weird
 Gloop, who also run the OSRS Wiki) - there's no formal rate limit or SLA
 published, just wiki-wide norms of "use a custom user-agent, be reasonable
 with request volume." Both the local dev server (`server/src/config.ts`) and
-the deployed Cloudflare Functions (`client/functions/_shared/config.ts`) set
+the deployed Cloudflare Worker (`client/worker/lib/config.ts`) set
 a descriptive `User-Agent` - please fill in real contact info in both before
 deploying - and cache Hiscores/WikiSync responses for 60 seconds (an
 in-memory TTL cache locally; a `Cache-Control` header that Cloudflare's edge

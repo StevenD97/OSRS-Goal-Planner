@@ -1,19 +1,22 @@
-# Cloudflare Pages project config - see README's "Deploying for free on
-# Cloudflare" section for the full setup walkthrough.
+# Cloudflare Worker config - see README's "Deploying for free on Cloudflare"
+# section for the full setup walkthrough.
 #
-# IMPORTANT: the dashboard's Git integration defaults "Deploy command" to
-# `npx wrangler deploy`, which is for plain Workers and fails with "Missing
-# entry-point to Worker script" here - override it to
-# `npx wrangler pages deploy dist` (Wrangler's own error message says as
-# much). pages_build_output_dir below matters for local tooling
-# (`wrangler pages dev`) and as a hint for wrangler's Pages-vs-Worker
-# detection, but doesn't make `wrangler deploy` itself work. Local
-# `wrangler pages dev -- npm:dev` proxy mode can't be combined with this
-# field (hence "pages:dev" in package.json builds first and runs
-# `wrangler pages dev dist` instead - see the README's local-testing note).
+# This is a Worker (not a "Pages project") deliberately: Cloudflare's
+# dashboard Git integration auto-injects a CLOUDFLARE_API_TOKEN for the
+# build/deploy commands that has Workers permissions but not Pages ones -
+# `wrangler pages deploy` fails there with an opaque "Authentication error
+# [code: 10000]" even for an account Super Admin, while plain `wrangler
+# deploy` against a Worker (this file's `main` + `[assets]`) works with that
+# same token. `worker/index.ts` serves the built SPA via the ASSETS binding
+# and handles the API routes directly (ported from what used to be separate
+# Pages Functions files).
 name = "osrs-goal-planner"
-pages_build_output_dir = "dist"
+main = "worker/index.ts"
 compatibility_date = "2024-09-23"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
 
 [[d1_databases]]
 binding = "DB"

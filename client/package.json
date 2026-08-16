@@ -9,8 +9,8 @@
     "build:artifact": "vite build --config vite.artifact.config.ts",
     "lint": "oxlint",
     "preview": "vite preview",
-    "pages:dev": "npm run build && wrangler pages dev dist",
-    "pages:deploy": "npm run build && wrangler pages deploy dist",
+    "worker:dev": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
     "db:migrate": "wrangler d1 execute osrs-goal-planner-sync --remote --file=./schema.sql",
     "db:migrate:local": "wrangler d1 execute osrs-goal-planner-sync --local --file=./schema.sql"
   },
