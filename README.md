@@ -241,31 +241,40 @@ provision cloud resources on your behalf.
    npm run db:migrate --workspace=client
    ```
 3. **Deploy.** Either:
-   - **Dashboard (recommended, auto-deploys on every push)**: in the
-     Cloudflare dashboard, create a Pages project connected to this GitHub
-     repo - build command `npm run build --workspace=client`, build output
-     directory `client/dist`, then under the project's Settings ->
-     Functions -> D1 database bindings, add a binding named `DB` pointing
-     at `osrs-goal-planner-sync`. Every push to this branch redeploys
+   - **Dashboard (recommended, auto-deploys on every push)**: Workers &amp;
+     Pages -> Create -> Pages -> Connect to Git -> pick this repo. Cloudflare's
+     current dashboard uses a unified build flow (not the older separate
+     "build output directory" field) - set:
+     - **Root directory**: `client` (this is a monorepo; everything the
+       build needs - `package.json`, `wrangler.toml`, `functions/` - lives
+       there)
+     - **Build command**: `npm install && npm run build`
+     - **Deploy command**: leave the default, `npx wrangler deploy` - this
+       reads `pages_build_output_dir` and the D1 binding straight from
+       `wrangler.toml`, so no separate dashboard binding step is needed as
+       long as the real `database_id` is in that file (step 1 above).
+     Every push to the branch you selected as "Production branch" redeploys
      automatically.
    - **CLI (one-off, or if you'd rather not connect GitHub)**:
      ```bash
      npm run pages:deploy --workspace=client
      ```
-     (First run will prompt to create the Pages project and link the D1
-     binding from `wrangler.toml` automatically.)
+     (First run will prompt to create the Pages project; the D1 binding is
+     read from `wrangler.toml` automatically either way.)
 4. **Fill in `OUTBOUND_USER_AGENT`** in `client/functions/_shared/config.ts`
    with real contact info before relying on this for real traffic - see
    "Being a good API citizen" below.
 
 **Local testing of the real (D1-backed) Functions**, as opposed to the
-Express dev-mirror: build first, then run Wrangler directly against the
-built output (`wrangler pages dev -- npm:dev` proxy mode was unreliable in
-testing - serving the built `dist/` directly was solid):
+Express dev-mirror: `npm run pages:dev --workspace=client` builds first,
+then runs Wrangler directly against the built output (`wrangler pages dev
+-- npm:dev` proxy mode was unreliable in testing - serving the built `dist/`
+directly is solid, and it's what `pages_build_output_dir` in `wrangler.toml`
+now also uses for the real dashboard deploy, so this is the closest local
+equivalent to production). First time only, apply the schema locally too:
 ```bash
-npm run build --workspace=client
-npm run db:migrate:local --workspace=client   # first time only
-cd client && npx wrangler pages dev dist
+npm run db:migrate:local --workspace=client
+npm run pages:dev --workspace=client
 ```
 
 ## Cloud Sync
