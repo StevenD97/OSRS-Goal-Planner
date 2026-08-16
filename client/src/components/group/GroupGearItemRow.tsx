@@ -20,19 +20,16 @@ export function GroupGearItemRow({ item }: { item: GearProgressionItem }) {
         count > 0 ? "border-accent/30 bg-accent-soft" : "border-line bg-surface-2",
       )}
     >
-      <div className="flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <WikiIcon filename={ITEM_ICON[item.id]} alt="" size={24} />
-          <Link
-            to={`/gear/${item.id}`}
-            className={clsx("font-medium hover:underline", count > 0 ? "text-accent" : "text-ink")}
-          >
-            {item.item}
-          </Link>
-          <Badge tone="neutral">{SLOT_LABELS[item.slot]}</Badge>
-          <Badge tone={item.style}>{STYLE_LABELS[item.style]}</Badge>
-        </div>
-        <p className="mt-1 text-sm text-muted">{item.source}</p>
+      <div className="flex flex-1 flex-wrap items-center gap-2">
+        <WikiIcon filename={ITEM_ICON[item.id]} alt="" size={24} />
+        <Link
+          to={`/gear/${item.id}`}
+          className={clsx("font-medium hover:underline", count > 0 ? "text-accent" : "text-ink")}
+        >
+          {item.item}
+        </Link>
+        <Badge tone="neutral">{SLOT_LABELS[item.slot]}</Badge>
+        <Badge tone={item.style}>{STYLE_LABELS[item.style]}</Badge>
       </div>
 
       <div className="flex flex-none items-center gap-1.5">
