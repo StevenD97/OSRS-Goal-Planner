@@ -211,6 +211,15 @@ Wrangler just to try the feature.
 
 ## Deploying for free on Cloudflare
 
+There are two free static-hosting paths in this repo - pick one, they're not
+meant to be run together. `.github/workflows/pages.yml` deploys the plain
+static build to **GitHub Pages** on every push to `main`; that's genuinely
+free and zero-setup, but GitHub Pages can only serve static files, so
+Hiscores/WikiSync sync and Cloud Sync silently can't reach a backend there
+(same limitation as the artifact preview build). The **Cloudflare** path
+below is more setup but gets you the full app, API included - it's the one
+to use if Cloud Sync and live Hiscores/WikiSync matter to you.
+
 The whole app - static frontend, the Hiscores/WikiSync proxy, and Cloud
 Sync's storage - runs on Cloudflare's free tier indefinitely at personal/
 small-group scale: Pages for static hosting (unlimited sites, no sleep),
