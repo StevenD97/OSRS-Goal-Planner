@@ -26,6 +26,12 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   plan ending in the item itself. Quest/skill steps auto-check themselves
   against synced Hiscores/WikiSync data; everything else is a manual
   checkbox. See "How the Action Tracker works" below.
+- **Official wiki icons** - skills (Goals, the Group Dashboard's Skills tab,
+  Action Tracker skill steps) and gear items (Gear Progression, the Group
+  Dashboard's Gear tab, item detail pages, Action Tracker gear/quest steps)
+  show their real OSRS Wiki icon next to the name, hotlinked via
+  `Special:FilePath` (`lib/wikiIcon.ts`) - see "Wiki icon accuracy" below for
+  an important caveat on this one.
 - **Item search & detail pages** - every Gear Progression item is searchable
   and clickable through to `/gear/:itemId`, which shows the same recursively-
   resolved acquisition plan as the Action Tracker, live, against whichever
@@ -249,6 +255,24 @@ some specifics - exact protection-payment items for hardwood trees and the
 calquat patch in particular - are flagged inline as worth double-checking
 in-game or against the wiki. Everything else (herb run, tree run, fruit tree
 run, celastrus's 8x potato cactus payment) was corroborated via research.
+
+### Wiki icon accuracy
+
+`data/skillIcons.ts` and `data/itemIcons.ts` map skills/items to OSRS Wiki
+image filenames, rendered via `Special:FilePath/<filename>` (no API call
+needed - it's a plain redirect, so it works as a normal `<img src>`). Skill
+icons follow the wiki's extremely well-established "`<Skill> icon.png`"
+convention and should be reliable. Item icons are less certain: most map
+straight to "`<item name>.png`" (the wiki's standard convention), but this
+sandbox's network policy blocks `oldschool.runescape.wiki` directly, so none
+of these ~80 filenames could be visually confirmed here - they're curated
+best guesses, not a verified list. `WikiIcon.tsx` hides itself on a failed
+image load, so a wrong filename just quietly omits that one icon rather than
+showing a broken image - but it's worth a pass with real internet access
+(i.e. after deploying) to spot-check the less obvious ones, especially the
+tiered/combined entries in `itemIcons.ts` (e.g. "Barrows sets" pointing at
+just `Dharok's platebody.png`) where one icon has to stand in for several
+items.
 
 ### Gear progression data currency
 

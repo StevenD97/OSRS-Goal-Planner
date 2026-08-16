@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import type { GroupMember } from "../../state/useAccountStore";
 import { SKILL_BAR_ORDER } from "../../data/skillBarOrder";
+import { SKILL_ICON } from "../../data/skillIcons";
 import { aggregateSkillLevel } from "../../lib/groupAggregate";
 import { Panel } from "../common/Panel";
+import { WikiIcon } from "../common/WikiIcon";
 
 function levelFor(member: GroupMember, skill: string): number | null {
   const entry = member.hiscores?.skills.find((s) => s.name === skill);
@@ -44,7 +46,10 @@ export function SkillsTab({ members }: { members: GroupMember[] }) {
             return (
               <tr key={skill} className="border-b border-line last:border-b-0 hover:bg-surface-2">
                 <td className="sticky left-0 bg-surface py-1.5 pr-4 font-medium text-ink">
-                  {skill}
+                  <span className="flex items-center gap-2">
+                    <WikiIcon filename={SKILL_ICON[skill]} alt="" size={18} />
+                    {skill}
+                  </span>
                 </td>
                 {members.map((m) => {
                   const level = levelFor(m, skill);

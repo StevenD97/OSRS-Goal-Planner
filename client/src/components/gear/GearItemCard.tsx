@@ -3,6 +3,8 @@ import { clsx } from "clsx";
 import type { GearProgressionItem } from "../../types/gearProgression";
 import { SLOT_LABELS, STYLE_LABELS } from "../../types/gearProgression";
 import { Badge } from "../common/Badge";
+import { WikiIcon } from "../common/WikiIcon";
+import { ITEM_ICON } from "../../data/itemIcons";
 import { useGearProgressionStore } from "../../state/useGearProgressionStore";
 import { useActionTrackerStore } from "../../state/useActionTrackerStore";
 
@@ -28,6 +30,7 @@ export function GearItemCard({ item, showStyleBadge = true }: { item: GearProgre
       />
       <div className="flex-1">
         <div className="flex flex-wrap items-center gap-2">
+          <WikiIcon filename={ITEM_ICON[item.id]} alt="" size={24} />
           <Link
             to={`/gear/${item.id}`}
             className={clsx(

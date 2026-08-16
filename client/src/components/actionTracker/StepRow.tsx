@@ -1,10 +1,21 @@
 import { clsx } from "clsx";
 import type { PlanStep } from "../../types/actionTracker";
 import { Badge } from "../common/Badge";
+import { WikiIcon } from "../common/WikiIcon";
+import { ITEM_ICON } from "../../data/itemIcons";
+import { SKILL_ICON } from "../../data/skillIcons";
+import { QUEST_POINT_ICON } from "../../lib/wikiIcon";
 import { useAccountStore } from "../../state/useAccountStore";
 import { useGearProgressionStore } from "../../state/useGearProgressionStore";
 import { useActionTrackerStore } from "../../state/useActionTrackerStore";
 import { isStepComplete } from "../../lib/actionPlan";
+
+function stepIcon(step: PlanStep): string | undefined {
+  if (step.kind === "gearItem") return ITEM_ICON[step.gearItemId];
+  if (step.kind === "skill") return SKILL_ICON[step.skill];
+  if (step.kind === "quest") return QUEST_POINT_ICON;
+  return undefined;
+}
 
 const KIND_LABEL: Record<PlanStep["kind"], string> = {
   quest: "Quest",
@@ -56,6 +67,7 @@ export function StepRow({ step, index }: { step: PlanStep; index: number }) {
       />
       <div className="flex-1">
         <div className="flex flex-wrap items-center gap-2">
+          <WikiIcon filename={stepIcon(step)} alt="" size={18} />
           <span
             className={clsx(
               step.kind === "gearItem" ? "font-semibold" : "font-medium",

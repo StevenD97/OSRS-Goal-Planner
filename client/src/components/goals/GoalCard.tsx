@@ -6,6 +6,8 @@ import { useGoalsStore } from "../../state/useGoalsStore";
 import { getGoalStatus } from "../../lib/goalProgress";
 import { Badge } from "../common/Badge";
 import { ProgressBar } from "../common/ProgressBar";
+import { WikiIcon } from "../common/WikiIcon";
+import { SKILL_ICON } from "../../data/skillIcons";
 
 export function GoalCard({ goal }: { goal: Goal }) {
   const members = useAccountStore((s) => s.members);
@@ -30,6 +32,9 @@ export function GoalCard({ goal }: { goal: Goal }) {
       />
       <div className="flex-1">
         <div className="flex flex-wrap items-center gap-2">
+          {goal.source.type === "skill" && (
+            <WikiIcon filename={SKILL_ICON[goal.source.skill]} alt="" size={18} />
+          )}
           <span
             className={clsx(
               "font-medium",

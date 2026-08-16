@@ -4,6 +4,8 @@ import { GEAR_PROGRESSION_BY_ID } from "../data/gearProgression";
 import { SLOT_LABELS, STYLE_LABELS } from "../types/gearProgression";
 import { Panel } from "../components/common/Panel";
 import { Badge } from "../components/common/Badge";
+import { WikiIcon } from "../components/common/WikiIcon";
+import { ITEM_ICON } from "../data/itemIcons";
 import { StepRow } from "../components/actionTracker/StepRow";
 import { useAccountStore } from "../state/useAccountStore";
 import { useGearProgressionStore } from "../state/useGearProgressionStore";
@@ -47,7 +49,10 @@ export function ItemDetailPage() {
 
       <div className="mt-2 mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-ink">{item.item}</h1>
+          <div className="flex items-center gap-3">
+            <WikiIcon filename={ITEM_ICON[item.id]} alt="" size={40} />
+            <h1 className="text-2xl font-semibold text-ink">{item.item}</h1>
+          </div>
           <div className="mt-2 flex flex-wrap gap-2">
             <Badge tone="neutral">{SLOT_LABELS[item.slot]}</Badge>
             <Badge tone={item.style}>{STYLE_LABELS[item.style]}</Badge>
