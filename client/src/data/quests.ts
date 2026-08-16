@@ -42,7 +42,6 @@ export const QUESTS: Record<string, Quest> = {
       { type: "quest", questId: "temple-of-ikov" },
       { type: "quest", questId: "the-tourist-trap" },
       { type: "quest", questId: "troll-stronghold" },
-      { type: "quest", questId: "death-plateau" },
       { type: "quest", questId: "priest-in-peril" },
       { type: "quest", questId: "waterfall-quest" },
       { type: "skill", skill: "Thieving", level: 53 },
@@ -72,7 +71,11 @@ export const QUESTS: Record<string, Quest> = {
   },
   "eyes-of-glouphrie": { id: "eyes-of-glouphrie", name: "The Eyes of Glouphrie" },
   "enlightened-journey": { id: "enlightened-journey", name: "Enlightened Journey" },
-  "troll-stronghold": { id: "troll-stronghold", name: "Troll Stronghold" },
+  "troll-stronghold": {
+    id: "troll-stronghold",
+    name: "Troll Stronghold",
+    requires: [{ type: "quest", questId: "death-plateau" }],
+  },
   watchtower: { id: "watchtower", name: "Watchtower" },
   "monkey-madness-1": { id: "monkey-madness-1", name: "Monkey Madness I" },
   "monkey-madness-2": {
@@ -112,8 +115,24 @@ export const QUESTS: Record<string, Quest> = {
   "underground-pass": { id: "underground-pass", name: "Underground Pass" },
   regicide: { id: "regicide", name: "Regicide" },
   "roving-elves": { id: "roving-elves", name: "Roving Elves" },
-  "mournings-end-1": { id: "mournings-end-1", name: "Mourning's End Part I" },
-  "mournings-end-2": { id: "mournings-end-2", name: "Mourning's End Part II" },
+  "mournings-end-1": {
+    id: "mournings-end-1",
+    name: "Mourning's End Part I",
+    requires: [
+      { type: "quest", questId: "roving-elves" },
+      { type: "quest", questId: "underground-pass" },
+      { type: "quest", questId: "regicide" },
+    ],
+  },
+  "mournings-end-2": {
+    id: "mournings-end-2",
+    name: "Mourning's End Part II",
+    requires: [
+      { type: "quest", questId: "mournings-end-1" },
+      { type: "quest", questId: "plague-city" },
+      { type: "quest", questId: "biohazard" },
+    ],
+  },
   "making-history": {
     id: "making-history",
     name: "Making History",
@@ -123,12 +142,6 @@ export const QUESTS: Record<string, Quest> = {
     id: "song-of-the-elves",
     name: "Song of the Elves",
     requires: [
-      { type: "quest", questId: "plague-city" },
-      { type: "quest", questId: "biohazard" },
-      { type: "quest", questId: "underground-pass" },
-      { type: "quest", questId: "regicide" },
-      { type: "quest", questId: "roving-elves" },
-      { type: "quest", questId: "mournings-end-1" },
       { type: "quest", questId: "mournings-end-2" },
       { type: "quest", questId: "making-history" },
       { type: "skill", skill: "Agility", level: 70 },
@@ -315,7 +328,7 @@ export const QUESTS: Record<string, Quest> = {
     id: "children-of-the-sun",
     name: "Children of the Sun",
     notes:
-      "Opening quest of the Twilight Emissaries (Varlamore) storyline, with no prerequisites of its own - unlocks Civitas illa Fortis and the Royal Titans.",
+      "Opening quest of the Twilight Emissaries (Varlamore) storyline, with no prerequisites of its own - unlocks Civitas illa Fortis. Despite the thematic tie-in, it does NOT unlock the Royal Titans (Eldric the Ice King / Branda the Fire Queen) - they're unrelated bosses with no quest requirement at all, in the Asgarnian Ice Dungeon and beneath the Karamja Volcano respectively.",
   },
   "in-search-of-the-myreque": { id: "in-search-of-the-myreque", name: "In Search of the Myreque" },
   "in-aid-of-the-myreque": { id: "in-aid-of-the-myreque", name: "In Aid of the Myreque" },

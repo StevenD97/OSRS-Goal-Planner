@@ -365,11 +365,11 @@ export const GEAR_PROGRESSION: GearProgressionTier[] = [
       {
         id: "prb-royal-titans",
         slot: "weapon",
-        item: "Royal Titans drops (Noon/Aire) - hybrid pouches, runes",
+        item: "Royal Titans drops (Eldric the Ice King / Branda the Fire Queen) - hybrid pouches, runes",
         style: "shared",
-        source: "Royal Titans (Asgarnia Ice Dungeon, reached via Varlamore)",
-        notes: "More of a resource/GP boss for ironmen than a gear boss, but worth farming pre-raids.",
-        requires: [{ type: "quest", questId: "children-of-the-sun" }],
+        source: "Eldric the Ice King (Asgarnian Ice Dungeon) and Branda the Fire Queen (beneath the Karamja Volcano)",
+        notes:
+          "More of a resource/GP boss for ironmen than a gear boss, but worth farming pre-raids. Despite the shared 'titan' theming, these are unrelated to the Varlamore storyline - no quest is required to access or fight them.",
       },
       {
         id: "prb-magic-armor",
