@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAccountStore } from "../state/useAccountStore";
 import { Panel } from "../components/common/Panel";
 import { MemberRow } from "../components/settings/MemberRow";
+import { CloudSyncPanel } from "../components/settings/CloudSyncPanel";
 
 export function SettingsPage() {
   const members = useAccountStore((s) => s.members);
@@ -119,6 +120,8 @@ export function SettingsPage() {
           </p>
         )}
       </Panel>
+
+      <CloudSyncPanel />
 
       <Panel className="mt-4">
         <h2 className="text-sm font-semibold tracking-wide text-muted uppercase">

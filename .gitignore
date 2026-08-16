@@ -5,3 +5,4 @@ dist-artifact/
 .env.local
 *.log
 .DS_Store
+.wrangler/

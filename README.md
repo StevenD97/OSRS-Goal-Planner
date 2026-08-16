@@ -50,6 +50,14 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
   **Gear** is the full Gear Progression item list with a +/- counter per
   item so the team can track exactly how many of each are currently owned
   across the group, not just a per-person obtained checkbox.
+- **Cloud Sync** - optional, free, no account/password: generate a private
+  code on the Settings page and the app pushes a snapshot of everything
+  (goals, dailies, farm run progress, gear progression, Action Tracker,
+  linked roster, DPS Calculator loadouts) to a small Cloudflare-hosted
+  backend, so entering the same code on another device or browser restores
+  it. See "Cloud Sync" below for exactly how it works and its security
+  model, and "Deploying for free on Cloudflare" for the one-time setup this
+  feature needs.
 - **WikiSync integration** - link your RSN and the app pulls your live quest,
   achievement diary, combat achievement, and collection log completion status
   from [WikiSync](https://oldschool.runescape.wiki/w/RuneScape:WikiSync) (the
@@ -66,16 +74,21 @@ A goal tracker, daily checklist, and farm run guide for Old School RuneScape.
 ## Architecture
 
 ```
-client/   React + TypeScript + Vite + Tailwind v4 SPA (zustand + localStorage
-          for all state - no account/database yet, see "Next steps")
-server/   Express + TypeScript proxy for the two external data sources
+client/            React + TypeScript + Vite + Tailwind v4 SPA (zustand +
+                    localStorage for all state, optionally mirrored to the
+                    cloud - see "Cloud Sync" below)
+client/functions/  Cloudflare Pages Functions - the real, deployed backend:
+                    Hiscores/WikiSync proxy + Cloud Sync's D1-backed API
+server/            Express + TypeScript - local-dev-only mirror of the same
+                    two proxy routes plus an in-memory Cloud Sync endpoint,
+                    so `npm run dev` doesn't require Wrangler day-to-day
 ```
 
-The server exists because neither the official Hiscores nor WikiSync send
-CORS headers, so the browser can't call them directly. It also adds a small
-in-memory cache and a descriptive `User-Agent` header, since WikiSync in
-particular is a free, volunteer-run service - see "Being a good API citizen"
-below.
+The proxy routes exist because neither the official Hiscores nor WikiSync
+send CORS headers, so the browser can't call them directly. Both the local
+and deployed versions add a small cache and a descriptive `User-Agent`
+header, since WikiSync in particular is a free, volunteer-run service - see
+"Being a good API citizen" below.
 
 ### Data flow
 
@@ -174,10 +187,10 @@ HTML file (`client/dist-artifact/index.html`, via `vite-plugin-singlefile`)
 with everything inlined - no server required. Routing uses `HashRouter` so
 it works from a `file://` URL or any static host without SPA-fallback
 config. Useful for sharing a click-through preview of the UI - Hiscores/
-WikiSync sync won't work in this mode since there's no backend to proxy
-through, but everything else (Goals, Dailies, Farm Runs, Gear Progression,
-Action Tracker, Group Dashboard, Settings roster management) runs entirely
-off localStorage and works normally.
+WikiSync sync and Cloud Sync won't work in this mode since there's no
+backend to talk to, but everything else (Goals, Dailies, Farm Runs, Gear
+Progression, Action Tracker, Group Dashboard, Settings roster management)
+runs entirely off localStorage and works normally.
 
 ## Running it
 
@@ -191,7 +204,90 @@ npm run dev:client
 
 The Vite dev server proxies `/api/*` to the Express server (see
 `client/vite.config.ts`), so the client always talks to `/api/...` regardless
-of environment.
+of environment. This also means Cloud Sync works locally out of the box -
+`server/src/routes/sync.ts` is a dev-only, in-memory mirror of the real
+D1-backed sync endpoint (see "Cloud Sync" below), so you don't need to run
+Wrangler just to try the feature.
+
+## Deploying for free on Cloudflare
+
+The whole app - static frontend, the Hiscores/WikiSync proxy, and Cloud
+Sync's storage - runs on Cloudflare's free tier indefinitely at personal/
+small-group scale: Pages for static hosting (unlimited sites, no sleep),
+Pages Functions for the API (same generous free request allowance as
+Workers), and D1 for the sync database (5 GB free, no pause-after-inactivity
+the way some other free database tiers have). None of this requires a
+credit card. You'll need your own free Cloudflare account - this repo can't
+provision cloud resources on your behalf.
+
+1. **Create a D1 database.** From `client/`:
+   ```bash
+   npx wrangler login          # opens a browser to authorize the CLI once
+   npx wrangler d1 create osrs-goal-planner-sync
+   ```
+   This prints a `database_id` - paste it into `client/wrangler.toml`,
+   replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`.
+2. **Apply the schema:**
+   ```bash
+   npm run db:migrate --workspace=client
+   ```
+3. **Deploy.** Either:
+   - **Dashboard (recommended, auto-deploys on every push)**: in the
+     Cloudflare dashboard, create a Pages project connected to this GitHub
+     repo - build command `npm run build --workspace=client`, build output
+     directory `client/dist`, then under the project's Settings ->
+     Functions -> D1 database bindings, add a binding named `DB` pointing
+     at `osrs-goal-planner-sync`. Every push to this branch redeploys
+     automatically.
+   - **CLI (one-off, or if you'd rather not connect GitHub)**:
+     ```bash
+     npm run pages:deploy --workspace=client
+     ```
+     (First run will prompt to create the Pages project and link the D1
+     binding from `wrangler.toml` automatically.)
+4. **Fill in `OUTBOUND_USER_AGENT`** in `client/functions/_shared/config.ts`
+   with real contact info before relying on this for real traffic - see
+   "Being a good API citizen" below.
+
+**Local testing of the real (D1-backed) Functions**, as opposed to the
+Express dev-mirror: build first, then run Wrangler directly against the
+built output (`wrangler pages dev -- npm:dev` proxy mode was unreliable in
+testing - serving the built `dist/` directly was solid):
+```bash
+npm run build --workspace=client
+npm run db:migrate:local --workspace=client   # first time only
+cd client && npx wrangler pages dev dist
+```
+
+## Cloud Sync
+
+`useSyncStore` (client) + `functions/api/sync/[code].ts` (server) implement
+the whole feature: a "sync code" is a random 12-character string generated
+client-side (`lib/cloudSync.ts`'s `generateSyncCode`, ~60 bits of entropy -
+not brute-forceable), used as the primary key of a single D1 table
+(`schema.sql`). Pushing/pulling copies raw `localStorage` string values for
+every store listed in `SYNCED_KEYS`, rather than reaching into each Zustand
+store's internals - it can't drift out of sync with whatever shape
+`persist()` gives those stores, and applying a pulled snapshot is just a
+`localStorage.setItem` loop followed by `window.location.reload()` so every
+store rehydrates normally.
+
+**Sync direction**: the device you're actively using auto-pushes (every 60s,
+and right before the tab hides/closes - `CloudSyncScheduler.tsx`) so its
+local edits keep the cloud copy current. Restoring a code always pulls
+cloud -> local and overwrites the device you restore on; there's no
+automatic bidirectional merge or conflict resolution between two devices
+both editing offline at once - last push wins. That's a deliberate scope
+boundary for a free, simple tool, not an oversight.
+
+**Cloud sync security model - read this before relying on it**: there's no
+account, password, or per-user auth. A sync code *is* the credential - it's
+high-entropy enough that guessing one is impractical, but anyone who
+obtains a code (screenshot, shoulder-surf, shared clipboard) can read or
+silently overwrite that data, and there is no recovery mechanism if a code
+is lost. This is the right tradeoff for a low-stakes personal/group planning
+tool where the alternative is a real auth system with real maintenance
+burden, but treat the code like a password, not like a username.
 
 ## Important caveats
 
@@ -325,18 +421,22 @@ more" tracking that a boolean can't represent.
 WikiSync is free, unauthenticated, and run by a small volunteer team (Weird
 Gloop, who also run the OSRS Wiki) - there's no formal rate limit or SLA
 published, just wiki-wide norms of "use a custom user-agent, be reasonable
-with request volume." The server sets a descriptive `User-Agent` (see
-`server/src/config.ts` - please fill in real contact info before deploying)
-and caches both Hiscores and WikiSync responses for 60 seconds. If this ever
+with request volume." Both the local dev server (`server/src/config.ts`) and
+the deployed Cloudflare Functions (`client/functions/_shared/config.ts`) set
+a descriptive `User-Agent` - please fill in real contact info in both before
+deploying - and cache Hiscores/WikiSync responses for 60 seconds (an
+in-memory TTL cache locally; a `Cache-Control` header that Cloudflare's edge
+honours automatically once deployed). If this ever
 gets real traffic, consider reaching out to Weird Gloop first, or standing up
 your own WikiSync-plugin fork (like [TempleOSRS](https://templeosrs.com) does)
 so you're not dependent on their infrastructure.
 
 ## Next steps (not yet built)
 
-- **Persistence beyond localStorage** - goals/dailies/farm-run progress are
-  per-browser right now. A real backend + auth would let goals follow a user
-  across devices.
+- **Real accounts for Cloud Sync** - the code-based sync is deliberately
+  password-free (see "Cloud Sync" above for the tradeoff); a real
+  auth system (magic links, OAuth) would remove the "anyone with the code"
+  risk if this ever needs to support less trusted groups.
 - **Fuller Hiscores activity name list** - `server/src/lib/hiscoresClient.ts`
   only names the first ~19 activity rows; the rest come through as
   `Activity <n>`. Worth filling in the full boss/minigame list.

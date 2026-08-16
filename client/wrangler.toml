@@ -1,0 +1,16 @@
+# Cloudflare Pages project config - see README's "Deploying for free on
+# Cloudflare" section for the full setup walkthrough. Needed for local
+# `wrangler pages dev` emulation regardless of how you deploy. The build
+# output directory is passed explicitly on the command line instead of set
+# here (`pages:deploy` -> `wrangler pages deploy dist`), since setting it in
+# this file conflicts with `wrangler pages dev`'s proxy mode (`-- npm:dev`,
+# used for local Functions+D1 testing against the live Vite dev server).
+name = "osrs-goal-planner"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "osrs-goal-planner-sync"
+# Replace with the real ID printed by:
+#   npx wrangler d1 create osrs-goal-planner-sync
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
